@@ -9,6 +9,7 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "base64-js": "^1.5.1",
     "react": "16.13.1",
     "react-native": "0.63.4"
   },

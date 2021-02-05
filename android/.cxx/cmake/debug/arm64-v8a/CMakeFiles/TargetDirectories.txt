@@ -1,0 +1,3 @@
+/Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/arm64-v8a/CMakeFiles/cpp.dir

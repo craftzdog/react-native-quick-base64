@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "/Users/nora/Developments/inkdrop/react-native-quick-base64/android/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/Users/nora/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/x86 --target clean"
+  ],
+  "libraries": {
+    "cpp-Debug-x86": {
+      "artifactName": "cpp",
+      "buildCommand": "/Users/nora/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/x86 --target cpp",
+      "abi": "x86",
+      "output": "/Users/nora/Developments/inkdrop/react-native-quick-base64/android/build/intermediates/cmake/debug/obj/x86/libcpp.so"
+    }
+  }
+}

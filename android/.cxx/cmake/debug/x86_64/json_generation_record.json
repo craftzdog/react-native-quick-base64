@@ -1,0 +1,46 @@
+[
+  {
+    "level": "INFO",
+    "message": "Start JSON generation. Platform version: 16 min SDK version: x86_64"
+  },
+  {
+    "level": "INFO",
+    "message": "rebuilding JSON /Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/x86_64/android_gradle_build.json due to:"
+  },
+  {
+    "level": "INFO",
+    "message": "- a dependent build file changed"
+  },
+  {
+    "level": "INFO",
+    "message": "  - /Users/nora/Developments/inkdrop/react-native-quick-base64/android/CMakeLists.txt"
+  },
+  {
+    "level": "INFO",
+    "message": "keeping json folder \u0027/Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/x86_64\u0027 but regenerating project"
+  },
+  {
+    "level": "INFO",
+    "message": "executing cmake Executable : /Users/nora/Library/Android/sdk/cmake/3.6.4111459/bin/cmake\narguments : \n-H/Users/nora/Developments/inkdrop/react-native-quick-base64/android\n-B/Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/x86_64\n-DANDROID_ABI\u003dx86_64\n-DANDROID_PLATFORM\u003dandroid-16\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/Users/nora/Developments/inkdrop/react-native-quick-base64/android/build/intermediates/cmake/debug/obj/x86_64\n-DCMAKE_BUILD_TYPE\u003dDebug\n-DANDROID_NDK\u003d/Users/nora/Library/Android/sdk/ndk/22.0.7026061\n-DCMAKE_CXX_FLAGS\u003d-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all\n-DCMAKE_TOOLCHAIN_FILE\u003d/Users/nora/Library/Android/sdk/ndk/22.0.7026061/build/cmake/android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003d/Users/nora/Library/Android/sdk/cmake/3.6.4111459/bin/ninja\n-GAndroid Gradle - Ninja\njvmArgs : \n\n"
+  },
+  {
+    "level": "INFO",
+    "message": "Executable : /Users/nora/Library/Android/sdk/cmake/3.6.4111459/bin/cmake\narguments : \n-H/Users/nora/Developments/inkdrop/react-native-quick-base64/android\n-B/Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/x86_64\n-DANDROID_ABI\u003dx86_64\n-DANDROID_PLATFORM\u003dandroid-16\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/Users/nora/Developments/inkdrop/react-native-quick-base64/android/build/intermediates/cmake/debug/obj/x86_64\n-DCMAKE_BUILD_TYPE\u003dDebug\n-DANDROID_NDK\u003d/Users/nora/Library/Android/sdk/ndk/22.0.7026061\n-DCMAKE_CXX_FLAGS\u003d-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all\n-DCMAKE_TOOLCHAIN_FILE\u003d/Users/nora/Library/Android/sdk/ndk/22.0.7026061/build/cmake/android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003d/Users/nora/Library/Android/sdk/cmake/3.6.4111459/bin/ninja\n-GAndroid Gradle - Ninja\njvmArgs : \n\n"
+  },
+  {
+    "level": "INFO",
+    "message": "done executing cmake"
+  },
+  {
+    "level": "INFO",
+    "message": "write build output /Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/x86_64/build_output.txt"
+  },
+  {
+    "level": "INFO",
+    "message": "write command file /Users/nora/Developments/inkdrop/react-native-quick-base64/android/.cxx/cmake/debug/x86_64/build_command.txt"
+  },
+  {
+    "level": "INFO",
+    "message": "JSON generation completed without problems"
+  }
+]

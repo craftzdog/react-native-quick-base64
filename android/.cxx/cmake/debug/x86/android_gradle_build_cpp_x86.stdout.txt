@@ -1,0 +1,2 @@
+[1/2] Building CXX object CMakeFiles/cpp.dir/Users/nora/Developments/inkdrop/react-native-quick-base64/cpp/react-native-quick-base64.cpp.o
+[2/2] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/x86/libcpp.so

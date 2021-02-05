@@ -7,10 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-
-		5E46D8CD2428F78900513E24 /* example.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E46D8CB2428F78900513E24 /* example.cpp */; };
 		5E555C0D2413F4C50049A1A2 /* QuickBase64.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* QuickBase64.mm */; };
-
+		88083B2825CCDF6900AD7862 /* react-native-quick-base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88083B2625CCDF6900AD7862 /* react-native-quick-base64.cpp */; };
+		88083C1025CCEDB000AD7862 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88083C0E25CCEDB000AD7862 /* base64.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,11 +26,11 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libQuickBase64.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQuickBase64.a; sourceTree = BUILT_PRODUCTS_DIR; };
-
-		5E46D8CB2428F78900513E24 /* example.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = example.cpp; path = ../cpp/example.cpp; sourceTree = "<group>"; };
-		5E46D8CC2428F78900513E24 /* example.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = example.h; path = ../cpp/example.h; sourceTree = "<group>"; };
+		88083B2625CCDF6900AD7862 /* react-native-quick-base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "react-native-quick-base64.cpp"; path = "../cpp/react-native-quick-base64.cpp"; sourceTree = "<group>"; };
+		88083B2725CCDF6900AD7862 /* react-native-quick-base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "react-native-quick-base64.h"; path = "../cpp/react-native-quick-base64.h"; sourceTree = "<group>"; };
+		88083C0E25CCEDB000AD7862 /* base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = base64.cpp; path = ../cpp/base64.cpp; sourceTree = "<group>"; };
+		88083C0F25CCEDB000AD7862 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base64.h; path = ../cpp/base64.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* QuickBase64.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QuickBase64.mm; sourceTree = "<group>"; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,11 +55,11 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-
-				5E46D8CB2428F78900513E24 /* example.cpp */,
-				5E46D8CC2428F78900513E24 /* example.h */,
+				88083B2625CCDF6900AD7862 /* react-native-quick-base64.cpp */,
+				88083B2725CCDF6900AD7862 /* react-native-quick-base64.h */,
+				88083C0E25CCEDB000AD7862 /* base64.cpp */,
+				88083C0F25CCEDB000AD7862 /* base64.h */,
 				B3E7B5891CC2AC0600A0062D /* QuickBase64.mm */,
-
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -122,10 +121,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
-				5E46D8CD2428F78900513E24 /* example.cpp in Sources */,
 				5E555C0D2413F4C50049A1A2 /* QuickBase64.mm in Sources */,
-
+				88083B2825CCDF6900AD7862 /* react-native-quick-base64.cpp in Sources */,
+				88083C1025CCEDB000AD7862 /* base64.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,11 +236,9 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = QuickBase64;
 				SKIP_INSTALL = YES;
-
 				SWIFT_OBJC_BRIDGING_HEADER = "QuickBase64-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-
 			};
 			name = Debug;
 		};
@@ -259,10 +255,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = QuickBase64;
 				SKIP_INSTALL = YES;
-
 				SWIFT_OBJC_BRIDGING_HEADER = "QuickBase64-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-
 			};
 			name = Release;
 		};
