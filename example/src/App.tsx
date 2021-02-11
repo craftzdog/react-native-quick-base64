@@ -1,16 +1,10 @@
 /* global performance */
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import jsBase64 from 'base64-js';
 import * as cppBase64 from 'react-native-quick-base64';
 import { data } from './image.json';
-
-/*
-function ab2str(buf) {
-  return String.fromCharCode.apply(null, new Uint8Array(buf));
-}
-*/
 
 const sleep = (t: number) => new Promise((resolve) => setTimeout(resolve, t));
 
@@ -22,6 +16,16 @@ export default function App() {
   );
   const [nativeBase64Result, setNativeBase64Result] = useState<number>(0);
 
+  useEffect(() => {
+    const jsb64 = require('base-64');
+    const binaryString = cppBase64.atob(data);
+    const binaryString2 = jsb64.decode(data);
+    const b64 = cppBase64.btoa(binaryString);
+    if (binaryString !== binaryString2)
+      throw new Error('Failed to decode base64');
+    if (b64 !== data) throw new Error('Failed to encode back to base64');
+  }, []);
+
   const handleNativeBase64Press = async () => {
     setProcessingNativeBase64(true);
     let dataToProcess = data;
@@ -31,6 +35,9 @@ export default function App() {
     for (let iter = 0; iter < 30; iter++) {
       const decoded = cppBase64.toByteArray(dataToProcess);
       dataToProcess = cppBase64.fromByteArray(decoded);
+      if (dataToProcess !== data) {
+        throw new Error('Data does not match');
+      }
     }
     const finishedTime = performance.now();
     console.log('done! took', finishedTime - startTime, 'milliseconds');
