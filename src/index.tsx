@@ -3,24 +3,44 @@ declare function base64FromArrayBuffer(data: string | ArrayBuffer): string;
 
 // from https://github.com/beatgammit/base64-js/blob/master/index.js
 function getLens(b64: string) {
-  var len = b64.length;
+  let len = b64.length;
 
   if (len % 4 > 0) {
     throw new Error('Invalid string. Length must be a multiple of 4');
   }
 
-  var validLen = b64.indexOf('=');
+  let validLen = b64.indexOf('=');
   if (validLen === -1) validLen = len;
 
-  var placeHoldersLen = validLen === len ? 0 : 4 - (validLen % 4);
+  let placeHoldersLen = validLen === len ? 0 : 4 - (validLen % 4);
 
   return [validLen, placeHoldersLen];
 }
 
+function uint8ArrayToString(array: Uint8Array) {
+  let out = '',
+    i = 0,
+    len = array.length;
+  while (i < len) {
+    const c = array[i++];
+    out += String.fromCharCode(c);
+  }
+  return out;
+}
+
+function stringToArrayBuffer(str: string) {
+  const buf = new ArrayBuffer(str.length);
+  const bufView = new Uint8Array(buf);
+  for (let i = 0, strLen = str.length; i < strLen; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf;
+}
+
 export function byteLength(b64: string): number {
-  var lens = getLens(b64);
-  var validLen = lens[0];
-  var placeHoldersLen = lens[1];
+  let lens = getLens(b64);
+  let validLen = lens[0];
+  let placeHoldersLen = lens[1];
   return ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
 }
 
@@ -33,15 +53,12 @@ export function fromByteArray(uint8: Uint8Array): string {
 }
 
 export function btoa(data: string): string {
-  return base64FromArrayBuffer(data);
+  return base64FromArrayBuffer(stringToArrayBuffer(data));
 }
 
 export function atob(b64: string): string {
-  return String.fromCharCode.apply(
-    null,
-    // @ts-ignore
-    new Uint8Array(base64ToArrayBuffer(b64))
-  );
+  const ua = new Uint8Array(base64ToArrayBuffer(b64));
+  return uint8ArrayToString(ua);
 }
 
 export function shim() {
