@@ -8,7 +8,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
 class QuickBase64Module extends ReactContextBaseJavaModule {
   static {
-    System.loadLibrary("cpp");
+    System.loadLibrary("quickbase64");
   }
 
   private static native void initialize(long jsiPtr, String docDir);
