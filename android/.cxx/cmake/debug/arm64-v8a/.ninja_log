@@ -1,6 +1,0 @@
-# ninja log v5
-0	421	0	CMakeFiles/cpp.dir/Users/nora/Developments/inkdrop/react-native-quick-base64/cpp/base64.cpp.o	584958f73b79148d
-2	426	0	CMakeFiles/cpp.dir/cpp-adapter.cpp.o	461814ee6c03c7fc
-0	799	0	CMakeFiles/cpp.dir/Users/nora/Developments/inkdrop/react-native-quick-base64/node_modules/react-native/ReactCommon/jsi/jsi/jsi.cpp.o	dd4bb0380b92c6d5
-1	871	0	CMakeFiles/cpp.dir/Users/nora/Developments/inkdrop/react-native-quick-base64/cpp/react-native-quick-base64.cpp.o	e95d49cc1d98c8ee
-871	991	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libcpp.so	9efbb4fcd89b9d4e
