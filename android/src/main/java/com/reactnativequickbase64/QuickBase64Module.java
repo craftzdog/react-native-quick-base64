@@ -6,7 +6,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
 
-class QuickBase64Module extends ReactContextBaseJavaModule {
+public class QuickBase64Module extends ReactContextBaseJavaModule {
   static {
     System.loadLibrary("quickbase64");
   }
