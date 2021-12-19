@@ -73,7 +73,7 @@ import java.util.List;
 public class ExampleJSIPackage extends ReanimatedJSIModulePackage {
     @Override
     public List<JSIModuleSpec> getJSIModules(ReactApplicationContext reactApplicationContext, JavaScriptContextHolder jsContext) {
-        QuickBase64Module.install(jsContext);
+        QuickBase64Module.install(reactApplicationContext);
         return super.getJSIModules(reactApplicationContext, jsContext);
     }
 }
