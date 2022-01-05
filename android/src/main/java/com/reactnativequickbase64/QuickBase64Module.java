@@ -6,13 +6,12 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
 
-class QuickBase64Module extends ReactContextBaseJavaModule {
+public class QuickBase64Module extends ReactContextBaseJavaModule {
   static {
     System.loadLibrary("quickbase64");
   }
 
   private static native void initialize(long jsiPtr, String docDir);
-  private static native void destruct();
 
   public QuickBase64Module(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -24,17 +23,9 @@ class QuickBase64Module extends ReactContextBaseJavaModule {
     return "QuickBase64";
   }
 
-  @Override
-  public void initialize() {
-    super.initialize();
-
+  public static void install(ReactApplicationContext context) {
     QuickBase64Module.initialize(
-      this.getReactApplicationContext().getJavaScriptContextHolder().get(),
-      this.getReactApplicationContext().getFilesDir().getAbsolutePath());
-  }
-
-  @Override
-  public void onCatalystInstanceDestroy() {
-    QuickBase64Module.destruct();
+      context.getJavaScriptContextHolder().get(),
+      context.getFilesDir().getAbsolutePath());
   }
 }
