@@ -13,7 +13,7 @@ To install QuickBase64 without Reanimated, open your Android project (the `andro
 
 
 ```java
-import com.reactnativequickbase64.QuickBase64Package;
+import com.reactnativequickbase64.QuickBase64JSIModulePackage;
 import com.facebook.react.bridge.JSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -38,7 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
         // Add this method here!
         @Override
         protected JSIModulePackage getJSIModulePackage() {
-          return new QuickBase64Package();
+          return new QuickBase64JSIModulePackage();
         }
       };
 

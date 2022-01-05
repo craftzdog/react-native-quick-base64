@@ -10,6 +10,8 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+import com.reactnativequickbase64.QuickBase64JSIModulePackage;
 import com.reactnativequickbase64.QuickBase64Package;
 import com.facebook.react.bridge.JSIModulePackage;
 
@@ -28,7 +30,6 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for QuickBase64Example:
           // packages.add(new MyReactNativePackage());
-          packages.add(new QuickBase64Package());
           return packages;
         }
 
@@ -39,7 +40,7 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected JSIModulePackage getJSIModulePackage() {
-          return new QuickBase64Package();
+          return new QuickBase64JSIModulePackage();
         }
       };
 
