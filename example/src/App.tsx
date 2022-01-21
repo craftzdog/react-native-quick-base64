@@ -5,6 +5,8 @@ import { StyleSheet, View, Text, Pressable } from 'react-native'
 import jsBase64 from 'base64-js'
 import * as cppBase64 from 'react-native-quick-base64'
 import { data } from './image.json'
+// @ts-ignore
+const isHermes = () => !!global.HermesInternal
 
 const sleep = (t: number) => new Promise(resolve => setTimeout(resolve, t))
 
@@ -81,6 +83,9 @@ export default function App() {
           {processingJSBase64 ? `Processing..` : 'Perform a benchmark test'}
         </Text>
       </Pressable>
+      <View style={styles.section}>
+        <Text>Hermes enabled? {JSON.stringify(isHermes())}</Text>
+      </View>
     </View>
   )
 }
@@ -105,5 +110,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10
   },
-  button: { backgroundColor: 'skyblue', padding: 12 }
+  button: { backgroundColor: 'skyblue', padding: 12 },
+  section: { marginTop: 32 }
 })
