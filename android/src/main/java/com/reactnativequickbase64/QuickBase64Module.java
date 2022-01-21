@@ -4,13 +4,10 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
-
+import com.facebook.react.bridge.ReactMethod;
 
 public class QuickBase64Module extends ReactContextBaseJavaModule {
-  static {
-    System.loadLibrary("quickbase64");
-  }
-
+  public static final String NAME = "QuickBase64";
   private static native void initialize(long jsiPtr, String docDir);
 
   public QuickBase64Module(ReactApplicationContext reactContext) {
@@ -23,9 +20,19 @@ public class QuickBase64Module extends ReactContextBaseJavaModule {
     return "QuickBase64";
   }
 
-  public static void install(ReactApplicationContext context) {
-    QuickBase64Module.initialize(
-      context.getJavaScriptContextHolder().get(),
-      context.getFilesDir().getAbsolutePath());
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  public boolean install() {
+    try {
+      System.loadLibrary("quickbase64");
+
+      ReactApplicationContext context = getReactApplicationContext();
+      initialize(
+        context.getJavaScriptContextHolder().get(),
+        context.getFilesDir().getAbsolutePath()
+      );
+      return true;
+    } catch (Exception exception) {
+      return false;
+    }
   }
 }

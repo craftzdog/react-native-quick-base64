@@ -1,4 +1,11 @@
+import { NativeModules } from 'react-native'
 import fallback from 'base64-js'
+
+const Base64Module = NativeModules.QuickBase64
+
+if (typeof Base64Module.install === 'function') {
+  Base64Module.install()
+}
 
 type FuncBase64ToArrayBuffer = (data: string) => ArrayBuffer
 type FuncBase64FromArrayBuffer = (data: string | ArrayBuffer) => string

@@ -10,10 +10,6 @@ Try the benchmarks under [example](./example).
 npm install react-native-quick-base64
 ```
 
-### Android
-
-To correctly initialize QuickBase64 on Android, please follow the [Installation guide](./INSTALL.md).
-
 ## Usage
 
 ```js
