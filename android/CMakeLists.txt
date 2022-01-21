@@ -1,18 +1,19 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.9.0)
 
+set (PACKAGE_NAME "react-native-quick-base64")
 set (CMAKE_VERBOSE_MAKEFILE ON)
 set (CMAKE_CXX_STANDARD 11)
 
 include_directories(
   ../cpp
-  ../../react-native/React
-  ../../react-native/React/Base
-  ../../react-native/ReactCommon/jsi
-  )
+  "${NODE_MODULES_DIR}/react-native/React"
+  "${NODE_MODULES_DIR}/react-native/React/Base"
+  "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi"
+)
 
 add_library(quickbase64 # Library name
   SHARED
-  ../../react-native/ReactCommon/jsi/jsi/jsi.cpp
+  "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp"
   ../cpp/base64.cpp
   ../cpp/base64.h
   ../cpp/react-native-quick-base64.cpp
