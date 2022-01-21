@@ -40,7 +40,7 @@ static def findNodeModules(baseDir) {
     }
     basePath = basePath.getParent()
   }
-  throw new GradleException("MMKV: Failed to find node_modules/ path!")
+  throw new GradleException("react-native-quick-base64: Failed to find node_modules/ path!")
 }
 
 def nodeModules = findNodeModules(projectDir);
