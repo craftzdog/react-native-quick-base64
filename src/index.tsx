@@ -3,7 +3,10 @@ import fallback from 'base64-js'
 
 const Base64Module = NativeModules.QuickBase64
 
-if (Base64Module !== null && typeof Base64Module.install === 'function') {
+if (
+  typeof Base64Module === 'object' &&
+  typeof Base64Module.install === 'function'
+) {
   Base64Module.install()
 }
 
