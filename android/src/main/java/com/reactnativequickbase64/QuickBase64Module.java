@@ -17,7 +17,7 @@ public class QuickBase64Module extends ReactContextBaseJavaModule {
   @NonNull
   @Override
   public String getName() {
-    return "QuickBase64";
+    return NAME;
   }
 
   @ReactMethod(isBlockingSynchronousMethod = true)
