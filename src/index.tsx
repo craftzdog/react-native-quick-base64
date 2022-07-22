@@ -66,8 +66,13 @@ export function toByteArray(b64: string): Uint8Array {
 
 export function fromByteArray(uint8: Uint8Array): string {
   if (typeof base64FromArrayBuffer !== 'undefined') {
-    if (uint8.buffer.byteLength !== uint8.length) {
-      return base64FromArrayBuffer(uint8.buffer.slice(0, uint8.length))
+    if (uint8.buffer.byteLength > uint8.byteLength || uint8.byteOffset > 0) {
+      return base64FromArrayBuffer(
+        uint8.buffer.slice(
+          uint8.byteOffset,
+          uint8.byteOffset + uint8.byteLength
+        )
+      )
     }
     return base64FromArrayBuffer(uint8.buffer)
   } else {
