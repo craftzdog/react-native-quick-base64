@@ -4,8 +4,6 @@ set (PACKAGE_NAME "react-native-quick-base64")
 set (CMAKE_VERBOSE_MAKEFILE ON)
 set (CMAKE_CXX_STANDARD 11)
 
-file(TO_CMAKE_PATH "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp" libPath)
-
 include_directories(
   ../cpp
   "${NODE_MODULES_DIR}/react-native/React"
@@ -15,7 +13,7 @@ include_directories(
 
 add_library(quickbase64 # Library name
   SHARED
-  ${libPath}
+  "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp"
   ../cpp/base64.cpp
   ../cpp/base64.h
   ../cpp/react-native-quick-base64.cpp
