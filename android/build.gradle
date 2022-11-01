@@ -4,7 +4,6 @@ buildscript {
   // Buildscript is evaluated before everything else so we can't use getExtOrDefault
   repositories {
     google()
-    jcenter()
     mavenCentral()
   }
 
