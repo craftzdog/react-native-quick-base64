@@ -24,7 +24,9 @@ RCT_EXPORT_MODULE()
     return;
   }
 
-  installBase64(*(facebook::jsi::Runtime *)cxxBridge.runtime);
+  [bridge dispatchBlock:^{
+    installBase64(*(facebook::jsi::Runtime *)cxxBridge.runtime);
+  } queue:RCTJSThread];
 }
 
 - (void)invalidate {
