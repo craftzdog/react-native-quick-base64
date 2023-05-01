@@ -40,6 +40,10 @@ static def findNodeModules(baseDir) {
 def nodeModules = findNodeModules(projectDir);
 logger.warn("react-native-quick-base64: node_modules/ found at: ${nodeModules}");
 
+def reactProperties = new Properties()
+file("$nodeModules/react-native/ReactAndroid/gradle.properties").withInputStream { reactProperties.load(it) }
+def REACT_NATIVE_VERSION = reactProperties.getProperty("VERSION_NAME").split("\\.")[1].toInteger()
+
 android {
   compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
   buildToolsVersion getExtOrDefault('buildToolsVersion')
@@ -55,7 +59,8 @@ android {
         cmake {
             cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all"
             abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
-            arguments "-DNODE_MODULES_DIR=${nodeModules}"
+            arguments "-DNODE_MODULES_DIR=${nodeModules}",
+              "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}"
         }
     }
     
