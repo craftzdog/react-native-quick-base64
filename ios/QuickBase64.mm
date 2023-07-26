@@ -1,7 +1,7 @@
 #import "QuickBase64.h"
 #import <React/RCTBridge+Private.h>
 #import <React/RCTUtils.h>
-#import "react-native-quick-base64.h"
+#import "../cpp/react-native-quick-base64.h"
 
 @implementation QuickBase64
 
