@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.9.0)
 
 set (PACKAGE_NAME "react-native-quick-base64")
 set (CMAKE_VERBOSE_MAKEFILE ON)
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 
 file(TO_CMAKE_PATH "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp" libPath)
 
