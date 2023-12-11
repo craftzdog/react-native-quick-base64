@@ -53,7 +53,7 @@ jobs:
         run: yarn install --frozen-lockfile --cwd example
 
       - name: Restore Gradle cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
