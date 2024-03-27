@@ -34,7 +34,7 @@ static def findNodeModules(baseDir) {
     }
     basePath = basePath.getParent()
   }
-  throw new GradleException("react-native-quick-base64: Failed to find node_modules/ path!")
+  throw GradleException("react-native-quick-base64: Failed to find node_modules/ path!")
 }
 
 def nodeModules = findNodeModules(projectDir);
@@ -46,11 +46,11 @@ android {
   ndkVersion getExtOrDefault('ndkVersion')
 
   defaultConfig {
-    minSdkVersion 21 
+    minSdkVersion 21
     targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
     versionCode 1
     versionName "1.0"
-    
+
     externalNativeBuild {
         cmake {
             cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all"
@@ -58,15 +58,15 @@ android {
             arguments "-DNODE_MODULES_DIR=${nodeModules}"
         }
     }
-    
+
   }
-  
+
   externalNativeBuild {
       cmake {
           path "CMakeLists.txt"
       }
   }
-  
+
   buildTypes {
     release {
       minifyEnabled false
@@ -141,7 +141,7 @@ repositories {
   }
 
   if (!found) {
-    throw new GradleException(
+    throw GradleException(
             "${project.name}: unable to locate React Native android sources. " +
                     "Ensure you have you installed React Native as a dependency in your project and try again."
     )
