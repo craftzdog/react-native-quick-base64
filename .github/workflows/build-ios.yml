@@ -51,6 +51,11 @@ jobs:
           bundler-cache: true
           working-directory: example/ios
 
+      - name: Upgrade RubyGems
+        run: |
+          gem update --system 3.2.3
+          gem install bundler --no-document
+
       - name: Restore Pods cache
         uses: actions/cache@v4
         with:

@@ -1,3 +1,7 @@
 *.pbxproj -text
 # specific for windows script files
 *.bat text eol=crlf
+# iOS Headers are mainly Objective-C++
+ios/**/*.h linguist-language=Objective-C++
+# Android Headers are C++
+android/**/*.h linguist-language=C++
