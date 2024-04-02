@@ -1,8 +1,13 @@
 # react-native-quick-base64
 
 A native implementation of Base64 in C++ for React Native.
-16x faster than [base64-js](https://github.com/beatgammit/base64-js) on an iPhone 15 Pro simulator.
+
+~16x faster than [base64-js](https://github.com/beatgammit/base64-js) on an iPhone 15 Pro Max simulator.
 Try the benchmarks under [example](./example).
+
+| iPhone                                            | Android                                             |
+| ------------------------------------------------- | --------------------------------------------------- |
+| ![iPhone](./docs/iphone-15-pro-max-simulator.png) | ![Android](./docs/android-pixel-6-pro-emulator.png) |
 
 ## Installation
 
@@ -13,10 +18,10 @@ npm install react-native-quick-base64
 ## Usage
 
 ```js
-import { btoa, atob } from 'react-native-quick-base64';
+import { btoa, atob } from 'react-native-quick-base64'
 
-const base64 = btoa('foo');
-const decoded = atob(base64);
+const base64 = btoa('foo')
+const decoded = atob(base64)
 ```
 
 ## Methods
