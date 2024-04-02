@@ -19,17 +19,20 @@ on:
       - 'example/yarn.lock'
 
 jobs:
-  build_example:
+  build_android_example:
     name: Build Android Example App
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup JDK 11
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 11
+          java-version: 17
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
       - uses: actions/setup-node@v4
         with:

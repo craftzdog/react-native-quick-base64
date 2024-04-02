@@ -1,154 +1,124 @@
-import java.nio.file.Paths
+import com.android.Version
+
+def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
+def agpVersionMajor = agpVersion.tokenize('.')[0].toInteger()
+def androidManifestPath = agpVersionMajor >= 7 ? 'src/main/AndroidManifest.xml' : 'src/hasNamespace/AndroidManifest.xml'
 
 buildscript {
-  // Buildscript is evaluated before everything else so we can't use getExtOrDefault
   repositories {
-    google()
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
     mavenCentral()
+    google()
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:4.2.2'
+    classpath 'com.android.tools.build:gradle:8.3.1'
   }
 }
 
+def resolveBuildType() {
+    Gradle gradle = getGradle()
+    String tskReqStr = gradle.getStartParameter().getTaskRequests()['args'].toString()
+
+    return tskReqStr.contains('Release') ? 'release' : 'debug'
+}
+
+def isNewArchitectureEnabled() {
+  // To opt-in for the New Architecture, you can either:
+  // - Set `newArchEnabled` to true inside the `gradle.properties` file
+  // - Invoke gradle with `-newArchEnabled=true`
+  // - Set an environment variable `ORG_GRADLE_PROJECT_newArchEnabled=true`
+  return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
+
+if (isNewArchitectureEnabled()) {
+  apply plugin: 'com.facebook.react'
+}
 apply plugin: 'com.android.library'
 
-def getExtOrDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['QuickBase64_' + name]
+def safeExtGet(prop, fallback) {
+  rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
-def getExtOrIntegerDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['QuickBase64_' + name]).toInteger()
-}
-
-static def findNodeModules(baseDir) {
-  def basePath = baseDir.toPath().normalize()
-  // Node's module resolution algorithm searches up to the root directory,
-  // after which the base path will be null
-  while (basePath) {
-    def nodeModulesPath = Paths.get(basePath.toString(), "node_modules")
-    def reactNativePath = Paths.get(nodeModulesPath.toString(), "react-native")
-    if (nodeModulesPath.toFile().exists() && reactNativePath.toFile().exists()) {
-      return nodeModulesPath.toString()
-    }
-    basePath = basePath.getParent()
-  }
-  throw new GradleException("react-native-quick-base64: Failed to find node_modules/ path!")
-}
-
-def nodeModules = findNodeModules(projectDir);
-logger.warn("react-native-quick-base64: node_modules/ found at: ${nodeModules}");
-
-android {
-  compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
-  buildToolsVersion getExtOrDefault('buildToolsVersion')
-  ndkVersion getExtOrDefault('ndkVersion')
-
-  defaultConfig {
-    minSdkVersion 21 
-    targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
-    versionCode 1
-    versionName "1.0"
-    
-    externalNativeBuild {
-        cmake {
-            cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all"
-            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
-            arguments "-DNODE_MODULES_DIR=${nodeModules}"
-        }
-    }
-    
-  }
-  
-  externalNativeBuild {
-      cmake {
-          path "CMakeLists.txt"
-      }
-  }
-  
-  buildTypes {
-    release {
-      minifyEnabled false
-    }
-  }
-  lintOptions {
-    disable 'GradleCompatible'
-  }
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
+def reactNativeArchitectures() {
+  def value = project.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
 repositories {
   mavenCentral()
-  google()
+}
 
-  def found = false
-  def defaultDir = null
-  def androidSourcesName = 'React Native sources'
-
-  if (rootProject.ext.has('reactNativeAndroidRoot')) {
-    defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
-  } else {
-    defaultDir = file("$nodeModules/react-native/android")
+android {
+  compileSdkVersion safeExtGet("compileSdkVersion", 28)
+  if (agpVersionMajor >= 7) {
+    namespace 'com.reactnativequickbase64'
   }
 
-  if (defaultDir.exists()) {
-    maven {
-      url defaultDir.toString()
-      name androidSourcesName
+  if (agpVersionMajor >= 8) {
+    buildFeatures {
+      buildConfig = true
     }
-
-    logger.info(":${project.name}:reactNativeAndroidRoot ${defaultDir.canonicalPath}")
-    found = true
-  } else {
-    def parentDir = rootProject.projectDir
-
-    1.upto(5, {
-      if (found) return true
-      parentDir = parentDir.parentFile
-
-      def androidSourcesDir = new File(
-              parentDir,
-              'node_modules/react-native'
-      )
-
-      def androidPrebuiltBinaryDir = new File(
-              parentDir,
-              'node_modules/react-native/android'
-      )
-
-      if (androidPrebuiltBinaryDir.exists()) {
-        maven {
-          url androidPrebuiltBinaryDir.toString()
-          name androidSourcesName
-        }
-
-        logger.info(":${project.name}:reactNativeAndroidRoot ${androidPrebuiltBinaryDir.canonicalPath}")
-        found = true
-      } else if (androidSourcesDir.exists()) {
-        maven {
-          url androidSourcesDir.toString()
-          name androidSourcesName
-        }
-
-        logger.info(":${project.name}:reactNativeAndroidRoot ${androidSourcesDir.canonicalPath}")
-        found = true
-      }
-    })
   }
 
-  if (!found) {
-    throw new GradleException(
-            "${project.name}: unable to locate React Native android sources. " +
-                    "Ensure you have you installed React Native as a dependency in your project and try again."
-    )
+  sourceSets {
+    main {
+      manifest.srcFile androidManifestPath
+    }
+  }
+
+  // Used to override the NDK path/version on internal CI or by allowing
+  // users to customize the NDK path/version from their root project (e.g. for M1 support)
+  if (rootProject.hasProperty("ndkPath")) {
+    ndkPath rootProject.ext.ndkPath
+  }
+  if (rootProject.hasProperty("ndkVersion")) {
+    ndkVersion rootProject.ext.ndkVersion
+  }
+
+  buildFeatures {
+    prefab true
+  }
+
+  defaultConfig {
+    minSdkVersion safeExtGet('minSdkVersion', 21)
+    targetSdkVersion safeExtGet('targetSdkVersion', 28)
+    versionCode 1
+    versionName "1.0"
+    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+    externalNativeBuild {
+      cmake {
+        cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all"
+        arguments "-DANDROID_STL=c++_shared"
+        abiFilters (*reactNativeArchitectures())
+      }
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  externalNativeBuild {
+    cmake {
+      path "CMakeLists.txt"
+    }
+  }
+  packagingOptions {
+    doNotStrip resolveBuildType() == 'debug' ? "**/**/*.so" : ''
+    excludes = [
+            "META-INF",
+            "META-INF/**",
+            "**/libjsi.so",
+            "**/libc++_shared.so"
+    ]
   }
 }
 
 dependencies {
-  // noinspection GradleDynamicVersion
-  api 'com.facebook.react:react-native:+'
+  //noinspection GradleDynamicVersion
+  implementation "com.facebook.react:react-android:+"
 }

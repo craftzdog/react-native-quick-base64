@@ -7,7 +7,7 @@ const options = {
   cwd: process.cwd(),
   env: process.env,
   stdio: 'inherit',
-  encoding: 'utf-8'
+  encoding: 'utf-8',
 }
 
 let result
