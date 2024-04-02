@@ -1,5 +1,5 @@
-#import "react-native-quick-base64.h"
-#import "base64.h"
+#include "react-native-quick-base64.h"
+#include "base64.h"
 
 #include <iostream>
 #include <sstream>
