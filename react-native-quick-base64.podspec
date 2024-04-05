@@ -22,9 +22,11 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig    = {
     "USE_HEADERMAP" => "NO",
   }
-  s.xcconfig               = {
-    "CLANG_CXX_LANGUAGE_STANDARD" => "c++17"
-  }
 
-  s.dependency "React"
+  if defined?(install_modules_dependencies()) != nil
+    install_modules_dependencies(s)
+  else
+    s.dependency "React"
+  end
+
 end
