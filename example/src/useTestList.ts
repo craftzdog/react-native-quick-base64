@@ -8,6 +8,7 @@ import './tests/basics';
 import './tests/convert';
 import './tests/corrupt';
 import './tests/url-safe';
+import './tests/zero';
 import './tests/big-data';
 
 export const useTestList = (): Suites => {

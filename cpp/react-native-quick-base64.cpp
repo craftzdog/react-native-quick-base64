@@ -38,7 +38,11 @@ void installBase64(jsi::Runtime& jsiRuntime) {
         if(!valueToString(runtime, arguments[0], &str)) {
           return jsi::Value(-1);
         }
-        std::string strBase64 = base64_encode(str);
+        bool url = false;
+        if (arguments[1].isBool()) {
+          url = arguments[1].asBool();
+        }
+        std::string strBase64 = base64_encode(str, url);
 
         return jsi::Value(jsi::String::createFromUtf8(runtime, strBase64));
       }
@@ -55,7 +59,11 @@ void installBase64(jsi::Runtime& jsiRuntime) {
         }
 
         std::string strBase64 = arguments[0].getString(runtime).utf8(runtime);
-        std::string str = base64_decode(strBase64);
+        bool removeLinebreaks = false;
+        if (arguments[1].isBool()) {
+          removeLinebreaks = arguments[1].asBool();
+        }
+        std::string str = base64_decode(strBase64, removeLinebreaks);
 
         jsi::Function arrayBufferCtor = runtime.global().getPropertyAsFunction(runtime, "ArrayBuffer");
         jsi::Object o = arrayBufferCtor.callAsConstructor(runtime, (int)str.length()).getObject(runtime);

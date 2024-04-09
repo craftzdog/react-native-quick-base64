@@ -7,8 +7,14 @@ if (Base64Module && typeof Base64Module.install === 'function') {
   Base64Module.install()
 }
 
-type FuncBase64ToArrayBuffer = (data: string) => ArrayBuffer
-type FuncBase64FromArrayBuffer = (data: string | ArrayBuffer) => string
+type FuncBase64ToArrayBuffer = (
+  data: string,
+  removeLinebreaks?: boolean
+) => ArrayBuffer
+type FuncBase64FromArrayBuffer = (
+  data: string | ArrayBuffer,
+  urlSafe?: boolean
+) => string
 
 declare var base64ToArrayBuffer: FuncBase64ToArrayBuffer | undefined
 declare const base64FromArrayBuffer: FuncBase64FromArrayBuffer | undefined
@@ -56,25 +62,32 @@ export function byteLength(b64: string): number {
   return ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen
 }
 
-export function toByteArray(b64: string): Uint8Array {
+export function toByteArray(
+  b64: string,
+  removeLinebreaks: boolean = false
+): Uint8Array {
   if (typeof base64ToArrayBuffer !== 'undefined') {
-    return new Uint8Array(base64ToArrayBuffer(b64))
+    return new Uint8Array(base64ToArrayBuffer(b64, removeLinebreaks))
   } else {
     return fallback.toByteArray(b64)
   }
 }
 
-export function fromByteArray(uint8: Uint8Array): string {
+export function fromByteArray(
+  uint8: Uint8Array,
+  urlSafe: boolean = false
+): string {
   if (typeof base64FromArrayBuffer !== 'undefined') {
     if (uint8.buffer.byteLength > uint8.byteLength || uint8.byteOffset > 0) {
       return base64FromArrayBuffer(
         uint8.buffer.slice(
           uint8.byteOffset,
           uint8.byteOffset + uint8.byteLength
-        )
+        ),
+        urlSafe
       )
     }
-    return base64FromArrayBuffer(uint8.buffer)
+    return base64FromArrayBuffer(uint8.buffer, urlSafe)
   } else {
     return fallback.fromByteArray(uint8)
   }
@@ -103,3 +116,7 @@ export const getNative = () => ({
   base64FromArrayBuffer,
   base64ToArrayBuffer,
 })
+
+export const trimBase64Padding = (str: string): string => {
+  return str.replace(/[.=]{1,2}$/, '')
+}
