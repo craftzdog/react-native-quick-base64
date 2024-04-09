@@ -42,9 +42,14 @@ void installBase64(jsi::Runtime& jsiRuntime) {
         if (arguments[1].isBool()) {
           url = arguments[1].asBool();
         }
-        std::string strBase64 = base64_encode(str, url);
-
-        return jsi::Value(jsi::String::createFromUtf8(runtime, strBase64));
+        try {
+          std::string strBase64 = base64_encode(str, url);
+          return jsi::Value(jsi::String::createFromUtf8(runtime, strBase64));
+        } catch (const std::runtime_error& error) {
+          throw jsi::JSError(runtime, error.what());
+        } catch (...) {
+          throw jsi::JSError(runtime, "unknown encoding error");
+        }
       }
   );
   jsiRuntime.global().setProperty(jsiRuntime, "base64FromArrayBuffer", std::move(base64FromArrayBuffer));
@@ -63,14 +68,18 @@ void installBase64(jsi::Runtime& jsiRuntime) {
         if (arguments[1].isBool()) {
           removeLinebreaks = arguments[1].asBool();
         }
-        std::string str = base64_decode(strBase64, removeLinebreaks);
-
-        jsi::Function arrayBufferCtor = runtime.global().getPropertyAsFunction(runtime, "ArrayBuffer");
-        jsi::Object o = arrayBufferCtor.callAsConstructor(runtime, (int)str.length()).getObject(runtime);
-        jsi::ArrayBuffer buf = o.getArrayBuffer(runtime);
-        memcpy(buf.data(runtime), str.c_str(), str.size());
-
-        return o;
+        try {
+          std::string str = base64_decode(strBase64, removeLinebreaks);
+          jsi::Function arrayBufferCtor = runtime.global().getPropertyAsFunction(runtime, "ArrayBuffer");
+          jsi::Object o = arrayBufferCtor.callAsConstructor(runtime, (int)str.length()).getObject(runtime);
+          jsi::ArrayBuffer buf = o.getArrayBuffer(runtime);
+          memcpy(buf.data(runtime), str.c_str(), str.size());
+          return o;
+        } catch (const std::runtime_error& error) {
+          throw jsi::JSError(runtime, error.what());
+        } catch (...) {
+          throw jsi::JSError(runtime, "unknown decoding error");
+        }
       }
   );
   jsiRuntime.global().setProperty(jsiRuntime, "base64ToArrayBuffer", std::move(base64ToArrayBuffer));

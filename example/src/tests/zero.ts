@@ -14,7 +14,7 @@ const checks: string[] = [
   'ends with a zero\0',
 ];
 
-describe('zero handling', () => {
+describe('zero (\\0)', () => {
   for (let i = 0; i < checks.length; i++) {
     const check = checks[i] as string;
     it(`convert to base64 and back: '${check}'`, async () => {
@@ -31,10 +31,7 @@ describe('zero handling', () => {
 
   const test = (data: Uint8Array, expected: string, descr: string) => {
     it(`known zero values: ${descr}`, async () => {
-      const hex = Buffer.from(data).toString('hex');
-      console.log('hex', hex);
       const actual = fromByteArray(data);
-      console.log('b64str', actual);
       expect(actual).to.equal(expected);
     });
   };
@@ -45,15 +42,15 @@ describe('zero handling', () => {
 
   // zer\0
   const zer0 = new Uint8Array([122, 101, 114, 0]);
-  test(zer0, 'emVyAA==', 'zer\0');
+  test(zer0, 'emVyAA==', 'zer\\0');
 
   // \0er0
   const ero = new Uint8Array([0, 101, 114, 111]);
-  test(ero, 'AGVybw==', '\0ero');
+  test(ero, 'AGVybw==', '\\0ero');
 
   // zer\0_value
   const zer0_value = new Uint8Array([
     122, 101, 114, 0, 95, 118, 97, 108, 117, 101,
   ]);
-  test(zer0_value, 'emVyAF92YWx1ZQ==', 'zer\0_value');
+  test(zer0_value, 'emVyAF92YWx1ZQ==', 'zer\\0_value');
 });
