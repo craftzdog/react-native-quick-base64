@@ -160,7 +160,7 @@ inline RetString encode_mime(String s) {
 
 template <typename RetString, typename String>
 inline RetString encode(String s, bool url) {
-  return base64_encode<RetString>(reinterpret_cast<const unsigned char*>(s.data()), s.size(), url);
+   return base64_encode<RetString>(reinterpret_cast<const unsigned char*>(s.data()), s.size(), url);
 }
 
 } // namespace detail

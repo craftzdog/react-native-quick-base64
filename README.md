@@ -28,29 +28,33 @@ const decoded = atob(base64)
 
 Compatible with [base64-js](https://github.com/beatgammit/base64-js).
 
-### `byteLength(b64: string): number`
+#### `byteLength(b64: string): number`
 
-Takes a base64 string and returns length of byte array
+Takes a base64 string and returns length of byte array.
 
-### `toByteArray(b64: string): Uint8Array`
+#### `toByteArray(b64: string, removeLinebreaks: boolean = false): Uint8Array`
 
-Takes a base64 string and returns a byte array
+Takes a base64 string and returns a byte array.  Optional `removeLinebreaks` removes all `\n` characters.
 
-### `fromByteArray(uint8: Uint8Array): string`
+#### `fromByteArray(uint8: Uint8Array, urlSafe: boolean = false): string`
 
-Takes a byte array and returns a base64 string
+Takes a byte array and returns a base64 string.  Optional `urlSafe` flag `true` allows for use in URLs.
 
-### `btoa(data: string): string`
+#### `btoa(data: string): string`
 
-Encodes a string in base64
+Encodes a string in base64.
 
-### `atob(b64: string): string`
+#### `atob(b64: string): string`
 
-Decodes a base64 encoded string
+Decodes a base64 encoded string.
 
-### `shim()`
+#### `shim()`
 
 Adds `btoa` and `atob` functions to `global`.
+
+#### `trimBase64Padding = (str: string): string`
+
+Trims the `=` padding character(s) off of the end of a base64 encoded string.  Also, for base64url encoded strings, it will trim off the trailing `.` character(s).
 
 ## Contributing
 

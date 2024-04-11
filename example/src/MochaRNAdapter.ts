@@ -7,7 +7,7 @@ let only = false;
 
 export const resetRootSuite = (): void => {
   rootSuite = new Mocha.Suite('') as MochaTypes.Suite;
-  rootSuite.timeout(15 * 1000);
+  rootSuite.timeout(30 * 1000); // big-data test can be time-consuming :|
   mochaContext = rootSuite;
 };
 
