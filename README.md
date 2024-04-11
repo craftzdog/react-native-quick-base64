@@ -34,7 +34,7 @@ Takes a base64 string and returns length of byte array.
 
 #### `toByteArray(b64: string, removeLinebreaks: boolean = false): Uint8Array`
 
-Takes a base64 string and returns a byte array.  Optional `removeLinebreaks` removes all `\n` characters.
+Takes a base64 string and returns a byte array. Optional `removeLinebreaks` removes all `\n` characters.
 
 #### `fromByteArray(uint8: Uint8Array, urlSafe: boolean = false): string`
 
@@ -54,7 +54,7 @@ Adds `btoa` and `atob` functions to `global`.
 
 #### `trimBase64Padding = (str: string): string`
 
-Trims the `=` padding character(s) off of the end of a base64 encoded string.  Also, for base64url encoded strings, it will trim off the trailing `.` character(s).
+Trims the `=` padding character(s) off of the end of a base64 encoded string. Also, for base64url encoded strings, it will trim off the trailing `.` character(s).
 
 ## Contributing
 
