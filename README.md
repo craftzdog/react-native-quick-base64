@@ -38,7 +38,7 @@ Takes a base64 string and returns a byte array.  Optional `removeLinebreaks` rem
 
 #### `fromByteArray(uint8: Uint8Array, urlSafe: boolean = false): string`
 
-Takes a byte array and returns a base64 string.  Optional `urlSafe` flag `true` allows for use in URLs.
+Takes a byte array and returns a base64 string. Optional `urlSafe` flag `true` will use [the URL-safe dictionary](https://github.com/craftzdog/react-native-quick-base64/blob/9d02dfd02599ca104d2ed6c1e2d938ddd9d6cd15/cpp/base64.h#L75).
 
 #### `btoa(data: string): string`
 
