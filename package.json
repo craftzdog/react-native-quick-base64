@@ -13,7 +13,7 @@
     "android",
     "ios",
     "cpp",
-    "react-native-quick-crypto.podspec",
+    "react-native-quick-base64.podspec",
     "!lib/typescript/example",
     "!android/build",
     "!ios/build",
