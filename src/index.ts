@@ -96,7 +96,7 @@ export function fromByteArray(
 export function btoa(data: string): string {
   const ab = stringToArrayBuffer(data)
   if (typeof base64FromArrayBuffer !== 'undefined') {
-    return base64FromArrayBuffer(ab)
+    return base64FromArrayBuffer(ab, false)
   } else {
     return fallback.fromByteArray(new Uint8Array(ab))
   }
