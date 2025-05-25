@@ -53,7 +53,7 @@ function stringToArrayBuffer(str: string) {
 /**
  * Calculates the byte length of a base64 string
  */
-export function byteLength(b64: string): number {
+export function byteLength(b64: string) {
   const [validLen, placeHoldersLen] = getLens(b64)
   return ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen
 }
