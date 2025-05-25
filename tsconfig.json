@@ -29,6 +29,7 @@
     "src",
     ".eslintrc.js",
     "babel.config.js",
+    "global.d.ts"
   ],
   "exclude": [
     "node_modules",
