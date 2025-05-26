@@ -1,11 +1,7 @@
 name: CI
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
   merge_group:
     types:
       - checks_requested
@@ -102,7 +98,7 @@ jobs:
 
       - name: Build example for Android
         env:
-          JAVA_OPTS: "-XX:MaxHeapSize=6g"
+          JAVA_OPTS: '-XX:MaxHeapSize=6g'
         run: |
           yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 
