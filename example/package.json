@@ -37,8 +37,7 @@
     "@types/mocha": "^10.0.6",
     "@types/react": "^19.0.0",
     "babel-plugin-module-resolver": "^5.0.2",
-    "react-native-builder-bob": "^0.40.11",
-    "react-native-monorepo-config": "^0.1.9"
+    "react-native-builder-bob": "^0.40.11"
   },
   "engines": {
     "node": ">=20.19.0"
