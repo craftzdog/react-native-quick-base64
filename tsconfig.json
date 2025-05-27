@@ -2,38 +2,28 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-quick-base64": ["./src/index"],
+      "react-native-quick-base64": ["./src/index"]
     },
-    "allowJs": false,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react-native",
-    "lib": ["esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
+    "noImplicitUseStrict": false,
     "noStrictGenericChecks": false,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext",
-    "outDir": "lib",
-  },
-  "include": [
-    "src",
-    ".eslintrc.js",
-    "babel.config.js",
-  ],
-  "exclude": [
-    "node_modules",
-    "lib",
-    "docs",
-    "example",
-  ]
+    "target": "ESNext",
+    "verbatimModuleSyntax": true
+  }
 }

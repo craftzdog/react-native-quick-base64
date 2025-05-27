@@ -1,1 +1,1 @@
-declare var performance;
+declare var performance

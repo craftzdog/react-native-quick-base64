@@ -83,11 +83,11 @@ export function fromByteArray(
         uint8.buffer.slice(
           uint8.byteOffset,
           uint8.byteOffset + uint8.byteLength
-        ),
+        ) as ArrayBuffer,
         urlSafe
       )
     }
-    return base64FromArrayBuffer(uint8.buffer, urlSafe)
+    return base64FromArrayBuffer(uint8.buffer as ArrayBuffer, urlSafe)
   } else {
     return fallback.fromByteArray(uint8)
   }
@@ -114,7 +114,7 @@ export function shim() {
 
 export const getNative = () => ({
   base64FromArrayBuffer,
-  base64ToArrayBuffer,
+  base64ToArrayBuffer
 })
 
 export const trimBase64Padding = (str: string): string => {

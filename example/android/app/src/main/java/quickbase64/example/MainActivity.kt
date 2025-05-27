@@ -1,4 +1,4 @@
-package com.quickbase64example
+package quickbase64.example
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

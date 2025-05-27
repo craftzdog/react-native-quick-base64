@@ -1,21 +1,33 @@
-import com.android.Version
-
-def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
-def agpVersionMajor = agpVersion.tokenize('.')[0].toInteger()
-def androidManifestPath = agpVersionMajor >= 7 ? 'src/main/AndroidManifest.xml' : 'src/hasNamespace/AndroidManifest.xml'
-
 buildscript {
+  ext.getExtOrDefault = {name ->
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['QuickBase64_' + name]
+  }
+
   repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-    mavenCentral()
     google()
+    mavenCentral()
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:8.3.1'
+    classpath "com.android.tools.build:gradle:8.7.2"
+    // noinspection DifferentKotlinGradleVersion
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefault('kotlinVersion')}"
   }
+}
+
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+apply plugin: "com.facebook.react"
+
+def getExtOrIntegerDefault(name) {
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["QuickBase64_" + name]).toInteger()
+}
+
+def reactNativeArchitectures() {
+  def value = project.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
 def resolveBuildType() {
@@ -25,69 +37,16 @@ def resolveBuildType() {
     return tskReqStr.contains('Release') ? 'release' : 'debug'
 }
 
-def isNewArchitectureEnabled() {
-  // To opt-in for the New Architecture, you can either:
-  // - Set `newArchEnabled` to true inside the `gradle.properties` file
-  // - Invoke gradle with `-newArchEnabled=true`
-  // - Set an environment variable `ORG_GRADLE_PROJECT_newArchEnabled=true`
-  return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
-}
-
-if (isNewArchitectureEnabled()) {
-  apply plugin: 'com.facebook.react'
-}
-apply plugin: 'com.android.library'
-
-def safeExtGet(prop, fallback) {
-  rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
-}
-
-def reactNativeArchitectures() {
-  def value = project.getProperties().get("reactNativeArchitectures")
-  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
-}
-
-repositories {
-  mavenCentral()
-}
-
 android {
-  compileSdkVersion safeExtGet("compileSdkVersion", 28)
-  if (agpVersionMajor >= 7) {
-    namespace 'com.reactnativequickbase64'
-  }
+  namespace 'com.reactnativequickbase64'
 
-  if (agpVersionMajor >= 8) {
-    buildFeatures {
-      buildConfig = true
-    }
-  }
-
-  sourceSets {
-    main {
-      manifest.srcFile androidManifestPath
-    }
-  }
-
-  // Used to override the NDK path/version on internal CI or by allowing
-  // users to customize the NDK path/version from their root project (e.g. for M1 support)
-  if (rootProject.hasProperty("ndkPath")) {
-    ndkPath rootProject.ext.ndkPath
-  }
-  if (rootProject.hasProperty("ndkVersion")) {
-    ndkVersion rootProject.ext.ndkVersion
-  }
-
-  buildFeatures {
-    prefab true
-  }
+  compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
 
   defaultConfig {
-    minSdkVersion safeExtGet('minSdkVersion', 21)
-    targetSdkVersion safeExtGet('targetSdkVersion', 28)
+    minSdkVersion getExtOrIntegerDefault("minSdkVersion")
+    targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
     versionCode 1
     versionName "1.0"
-    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
     externalNativeBuild {
       cmake {
         cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all"
@@ -95,6 +54,21 @@ android {
         abiFilters (*reactNativeArchitectures())
       }
     }
+  }
+
+  buildFeatures {
+    buildConfig true
+    prefab true
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+    }
+  }
+
+  lintOptions {
+    disable "GradleCompatible"
   }
 
   compileOptions {
@@ -116,9 +90,31 @@ android {
             "**/libc++_shared.so"
     ]
   }
+
+  sourceSets {
+    main {
+      java.srcDirs += [
+        "generated/java",
+        "generated/jni"
+      ]
+    }
+  }
 }
 
+repositories {
+  mavenCentral()
+  google()
+}
+
+def kotlin_version = getExtOrDefault("kotlinVersion")
+
 dependencies {
-  //noinspection GradleDynamicVersion
-  implementation "com.facebook.react:react-android:+"
+  implementation "com.facebook.react:react-android"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+react {
+  jsRootDir = file("../src/")
+  libraryName = "QuickBase64"
+  codegenJavaPackageName = "com.quickbase64"
 }
