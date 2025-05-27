@@ -18,6 +18,7 @@
     "mocha": "^10.3.0",
     "react": "19.0.0",
     "react-native": "0.79.2",
+    "react-native-quick-base64": "link:../",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5"
   },

@@ -10902,9 +10902,16 @@ __metadata:
     react-native: "npm:0.79.2"
     react-native-builder-bob: "npm:^0.40.11"
     react-native-monorepo-config: "npm:^0.1.9"
+    react-native-quick-base64: "link:../"
     stream-browserify: "npm:^3.0.0"
     util: "npm:^0.12.5"
   languageName: unknown
+  linkType: soft
+
+"react-native-quick-base64@link:../::locator=react-native-quick-base64-example%40workspace%3Aexample":
+  version: 0.0.0-use.local
+  resolution: "react-native-quick-base64@link:../::locator=react-native-quick-base64-example%40workspace%3Aexample"
+  languageName: node
   linkType: soft
 
 "react-native-quick-base64@workspace:.":
