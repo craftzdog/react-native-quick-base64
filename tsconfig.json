@@ -23,8 +23,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext",
-    "outDir": "lib",
+    "target": "ESNext",
+    "verbatimModuleSyntax": true
   },
   "include": [
     "src",
@@ -37,5 +37,6 @@
     "lib",
     "docs",
     "example",
+    "history"
   ]
 }
