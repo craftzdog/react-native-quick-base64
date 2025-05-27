@@ -125,7 +125,7 @@ export function shim() {
  */
 export const getNative = () => ({
   base64FromArrayBuffer: global.base64FromArrayBuffer,
-  base64ToArrayBuffer: global.base64ToArrayBuffer,
+  base64ToArrayBuffer: global.base64ToArrayBuffer
 })
 
 /**
