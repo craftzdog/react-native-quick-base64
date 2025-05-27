@@ -85,11 +85,4 @@ android/generated
 # React Native Nitro Modules
 nitrogen/
 
-# React Native Codegen
-ios/generated
-android/generated
-
-# React Native Nitro Modules
-nitrogen/
-
 .history/
