@@ -14,19 +14,27 @@ RCT_EXPORT_MODULE(QuickBase64)
   return YES;
 }
 
-- (void)setBridge:(RCTBridge *)bridge
-{
+- (void)setBridge:(RCTBridge *)bridge {
   _bridge = bridge;
   _setBridgeOnMainQueue = RCTIsMainQueue();
+}
 
-  RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
-  if (!cxxBridge.runtime) {
-    return;
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
+  RCTCxxBridge *cxxBridge = (RCTCxxBridge *)_bridge;
+  if (cxxBridge == nil || cxxBridge.runtime == nil) {
+    NSLog(@"[QuickBase64] Could not access JSI runtime");
+    return @false;
   }
 
-  [bridge dispatchBlock:^{
+  @try {
+    NSLog(@"[QuickBase64] Installing JSI bindings...");
     installBase64(*(facebook::jsi::Runtime *)cxxBridge.runtime);
-  } queue:RCTJSThread];
+    NSLog(@"[QuickBase64] JSI bindings installed");
+    return @true;
+  } @catch (NSException *exception) {
+    NSLog(@"[QuickBase64] Failed to install: %@", exception.reason);
+    return @false;
+  }
 }
 
 - (void)invalidate {

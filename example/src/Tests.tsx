@@ -1,20 +1,20 @@
-import React, {useEffect} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import {useRunTests} from './useRunTests';
-import {useTestList} from './useTestList';
-import {TestItem} from './TestItem';
+import { useEffect } from 'react'
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { useRunTests } from './useRunTests'
+import { useTestList } from './useTestList'
+import { TestItem } from './TestItem'
 
 const Tests = () => {
-  let totalCount = 0;
-  const tests = useTestList();
-  const [results, runTests, running] = useRunTests();
+  let totalCount = 0
+  const tests = useTestList()
+  const [results, runTests, running] = useRunTests()
 
   // TODO: maybe run upon button click?
   useEffect(
     () => runTests(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+    []
+  )
 
   return (
     <View>
@@ -34,7 +34,7 @@ const Tests = () => {
       </View>
       <View>
         {Object.entries(tests).map(([suiteName, suite], index) => {
-          totalCount += suite.count;
+          totalCount += suite.count
           return (
             <TestItem
               key={index.toString()}
@@ -42,7 +42,7 @@ const Tests = () => {
               count={suite.count}
               results={results[suiteName]?.results || []}
             />
-          );
+          )
         })}
       </View>
       <View style={styles.footer}>
@@ -52,10 +52,10 @@ const Tests = () => {
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default Tests;
+export default Tests
 
 const styles = StyleSheet.create({
   header: {
@@ -67,28 +67,28 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     gap: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#ccc'
   },
   labelName: {
-    flex: 8,
+    flex: 8
   },
   label: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#999',
+    color: '#999'
   },
   footer: {
     width: '100%',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   footerItem: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   totalCount: {
     textAlign: 'right',
     fontSize: 12,
     fontWeight: 'bold',
-    paddingVertical: 5,
-  },
-});
+    paddingVertical: 5
+  }
+})

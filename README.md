@@ -1,65 +1,119 @@
 # react-native-quick-base64
 
-A native implementation of Base64 in C++ for React Native.
+A blazing fast, native Base64 implementation for React Native using C++ and JSI.
 
-~16x faster than [base64-js](https://github.com/beatgammit/base64-js) on an iPhone 15 Pro Max simulator.
-Try the benchmarks under [example](./example).
+This library is ~16x faster than [base64-js](https://github.com/beatgammit/base64-js) on an iPhone 15 Pro Max simulator.
+Try the benchmarks in the [example](./example) app.
 
 | iPhone                                            | Android                                             |
 | ------------------------------------------------- | --------------------------------------------------- |
 | ![iPhone](./docs/iphone-15-pro-max-simulator.png) | ![Android](./docs/android-pixel-6-pro-emulator.png) |
 
+---
+
+## Features
+
+- ⚡ Native C++/JSI implementation for maximum performance
+- 🧠 Automatically installs its JSI bindings at runtime
+- 🧩 Drop-in replacement for `base64-js` with matching API
+- 🔒 No additional native setup or linking required
+
+> ℹ️ **Heads-up**:
+> Starting with recent versions of **Hermes**, `btoa` and `atob` are **natively available in the JS runtime**.
+> You likely don't need to use the versions provided by this library anymore unless you're running on an older engine or want consistent behavior across platforms.
+> These methods will remain in the package for compatibility but are considered **deprecated**.
+
+---
+
 ## Installation
 
-```sh
+```bash
 npm install react-native-quick-base64
 ```
 
-## Usage
+---
+
+This module installs its native bindings automatically.
+Simply importing the library is enough to activate the native backend.
+Add it to your root entry point file or your first \_layout.tsx.
 
 ```js
+import 'react-native-quick-base64' // triggers native JSI install to global namespace
+```
+
+You can also import individual helpers:
+
+```tsx
+import { fromByteArray, toByteArray } from 'react-native-quick-base64'
+```
+
+### Usage
+
+```tsx
 import { btoa, atob } from 'react-native-quick-base64'
 
 const base64 = btoa('foo')
 const decoded = atob(base64)
 ```
 
-## Methods
+---
+
+## API
 
 Compatible with [base64-js](https://github.com/beatgammit/base64-js).
 
-#### `byteLength(b64: string): number`
+### `byteLength(b64: string): number`
 
-Takes a base64 string and returns length of byte array.
+Returns the length of the byte array that corresponds to the base64 string.
 
-#### `toByteArray(b64: string, removeLinebreaks: boolean = false): Uint8Array`
+### `toByteArray(b64: string, removeLinebreaks: boolean = false): Uint8Array`
 
-Takes a base64 string and returns a byte array. Optional `removeLinebreaks` removes all `\n` characters.
+Converts a base64 string into a Uint8Array.
+If `removeLinebreaks` is `true`, all `\n` characters are removed first.
 
-#### `fromByteArray(uint8: Uint8Array, urlSafe: boolean = false): string`
+### `fromByteArray(uint8: Uint8Array, urlSafe: boolean = false): string`
 
-Takes a byte array and returns a base64 string. Optional `urlSafe` flag `true` will use [the URL-safe dictionary](https://github.com/craftzdog/react-native-quick-base64/blob/9d02dfd02599ca104d2ed6c1e2d938ddd9d6cd15/cpp/base64.h#L75).
+Converts a byte array into a base64 string.
+If `urlSafe` is `true`, the output uses a URL-safe base64 charset.
 
-#### `btoa(data: string): string`
+### `btoa(data: string): string` ⚠️ Deprecated
 
-Encodes a string in base64.
+Encodes a string into base64 format.
 
-#### `atob(b64: string): string`
+> **Avoid using this unless you're on an older JS engine.**
+> Use `fromByteArray(new TextEncoder().encode(...))` instead for better encoding control.
 
-Decodes a base64 encoded string.
+### `atob(b64: string): string` ⚠️ Deprecated
 
-#### `shim()`
+Decodes a base64 string into a UTF-8 string.
 
-Adds `btoa` and `atob` functions to `global`.
+> **Avoid using this unless you're on an older JS engine.**
+> Use `TextDecoder + toByteArray()` for more robust decoding.
 
-#### `trimBase64Padding = (str: string): string`
+### `shim()`
 
-Trims the `=` padding character(s) off of the end of a base64 encoded string. Also, for base64url encoded strings, it will trim off the trailing `.` character(s).
+Adds global `btoa` and `atob` functions
+
+```ts
+import { shim } from 'react-native-quick-base64'
+
+shim()
+
+btoa('foo') // available globally
+```
+
+### `trimBase64Padding(str: string): string`
+
+Removes trailing `=` or `.` padding from base64 or base64url-encoded strings.
+
+---
 
 ## Contributing
 
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+See the [contributing guide](https://github.com/craftzdog/react-native-quick-base64/blob/main/CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+
+---
 
 ## License
 
-MIT by Takuya Matsuyama
+MIT © [Takuya Matsuyama](https://github.com/craftzdog)

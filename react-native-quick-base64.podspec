@@ -10,23 +10,23 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => "12.4" }
+  s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/craftzdog/react-native-quick-base64.git", :tag => "#{s.version}" }
 
+  s.source_files =
   s.source_files = [
     "ios/**/*.{h,m,mm}",
-    "cpp/**/*.{h,c,cpp}",
-    "ios/QuickBase64Module.h"
+    "cpp/**/*.{h,cpp}"
   ]
 
-  s.pod_target_xcconfig    = {
-    "USE_HEADERMAP" => "NO",
+  s.header_mappings_dir = 'ios'
+  s.pod_target_xcconfig = {
+    "USE_HEADERMAP" => "NO"
   }
 
-  if defined?(install_modules_dependencies()) != nil
+  if respond_to?(:install_modules_dependencies)
     install_modules_dependencies(s)
   else
-    s.dependency "React"
+    s.dependency "React-Core"
   end
-
 end

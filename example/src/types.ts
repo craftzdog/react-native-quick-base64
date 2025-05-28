@@ -1,35 +1,35 @@
 export type Suites = {
-  [key: string]: Suite;
-};
+  [key: string]: Suite
+}
 
 export type Suite = {
-  value: boolean;
-  count: number;
-};
+  value: boolean
+  count: number
+}
 
 export type SuiteResults = {
-  [key: string]: SuiteResult;
-};
+  [key: string]: SuiteResult
+}
 
 export type SuiteResult = {
-  results: TestResult[];
-};
+  results: TestResult[]
+}
 
 export type TestResult = {
-  type: 'correct' | 'incorrect' | 'grouping';
-  description: string;
-  errorMsg?: string;
-  indentation: number;
-  suiteName: string;
-};
+  type: 'correct' | 'incorrect' | 'grouping'
+  description: string
+  errorMsg?: string
+  indentation: number
+  suiteName: string
+}
 
 export type Stats = {
-  start: Date;
-  end: Date;
-  duration: number;
-  suites: number;
-  tests: number;
-  passes: number;
-  pending: number;
-  failures: number;
-};
+  start: Date
+  end: Date
+  duration: number
+  suites: number
+  tests: number
+  passes: number
+  pending: number
+  failures: number
+}
