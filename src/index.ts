@@ -1,27 +1,16 @@
 import { NativeModules } from 'react-native'
-import fallback from 'base64-js'
 
 const Base64Module = NativeModules.QuickBase64
 
-if (Base64Module && typeof Base64Module.install === 'function') {
+if (Base64Module && typeof global.base64FromArrayBuffer !== 'function') {
   Base64Module.install()
 }
 
-type FuncBase64ToArrayBuffer = (
-  data: string,
-  removeLinebreaks?: boolean
-) => ArrayBuffer
-type FuncBase64FromArrayBuffer = (
-  data: string | ArrayBuffer,
-  urlSafe?: boolean
-) => string
-
-declare var base64ToArrayBuffer: FuncBase64ToArrayBuffer | undefined
-declare const base64FromArrayBuffer: FuncBase64FromArrayBuffer | undefined
-
-// from https://github.com/beatgammit/base64-js/blob/master/index.js
+/**
+ * Calculates valid length and placeholder length for base64 string
+ */
 function getLens(b64: string) {
-  let len = b64.length
+  const len = b64.length
 
   if (len % 4 > 0) {
     throw new Error('Invalid string. Length must be a multiple of 4')
@@ -30,93 +19,118 @@ function getLens(b64: string) {
   let validLen = b64.indexOf('=')
   if (validLen === -1) validLen = len
 
-  let placeHoldersLen = validLen === len ? 0 : 4 - (validLen % 4)
+  const placeHoldersLen = validLen === len ? 0 : 4 - (validLen % 4)
 
-  return [validLen, placeHoldersLen]
+  return [validLen, placeHoldersLen] as const
 }
 
+/**
+ * Converts Uint8Array to string
+ */
 function uint8ArrayToString(array: Uint8Array) {
-  let out = '',
-    i = 0,
-    len = array.length
-  while (i < len) {
-    const c = array[i++] as number
-    out += String.fromCharCode(c)
+  let out = ''
+  for (let i = 0; i < array.length; i++) {
+    const charCode = array[i]
+    if (charCode !== undefined) {
+      out += String.fromCharCode(charCode)
+    }
   }
   return out
 }
 
+/**
+ * Converts string to ArrayBuffer
+ */
 function stringToArrayBuffer(str: string) {
   const buf = new ArrayBuffer(str.length)
   const bufView = new Uint8Array(buf)
-  for (let i = 0, strLen = str.length; i < strLen; i++) {
+  for (let i = 0; i < str.length; i++) {
     bufView[i] = str.charCodeAt(i)
   }
   return buf
 }
 
-export function byteLength(b64: string): number {
-  let lens = getLens(b64)
-  let validLen = lens[0] as number
-  let placeHoldersLen = lens[1] as number
+/**
+ * Calculates the byte length of a base64 string
+ */
+export function byteLength(b64: string) {
+  const [validLen, placeHoldersLen] = getLens(b64)
   return ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen
 }
 
+/**
+ * Converts base64 string to Uint8Array
+ */
 export function toByteArray(
   b64: string,
   removeLinebreaks: boolean = false
 ): Uint8Array {
-  if (typeof base64ToArrayBuffer !== 'undefined') {
-    return new Uint8Array(base64ToArrayBuffer(b64, removeLinebreaks))
-  } else {
-    return fallback.toByteArray(b64)
-  }
+  return new Uint8Array(global.base64ToArrayBuffer(b64, removeLinebreaks))
 }
 
+/**
+ * Converts Uint8Array to base64 string
+ */
 export function fromByteArray(
   uint8: Uint8Array,
   urlSafe: boolean = false
 ): string {
-  if (typeof base64FromArrayBuffer !== 'undefined') {
-    if (uint8.buffer.byteLength > uint8.byteLength || uint8.byteOffset > 0) {
-      return base64FromArrayBuffer(
-        uint8.buffer.slice(
-          uint8.byteOffset,
-          uint8.byteOffset + uint8.byteLength
-        ) as ArrayBuffer,
-        urlSafe
-      )
+  if (uint8.buffer.byteLength > uint8.byteLength || uint8.byteOffset > 0) {
+    const buffer =
+      uint8.buffer instanceof ArrayBuffer
+        ? uint8.buffer.slice(
+            uint8.byteOffset,
+            uint8.byteOffset + uint8.byteLength
+          )
+        : new ArrayBuffer(uint8.byteLength)
+
+    if (buffer instanceof ArrayBuffer) {
+      return global.base64FromArrayBuffer(buffer, urlSafe)
     }
-    return base64FromArrayBuffer(uint8.buffer as ArrayBuffer, urlSafe)
-  } else {
-    return fallback.fromByteArray(uint8)
   }
+
+  const buffer =
+    uint8.buffer instanceof ArrayBuffer
+      ? uint8.buffer
+      : new ArrayBuffer(uint8.byteLength)
+  return global.base64FromArrayBuffer(buffer, urlSafe)
 }
 
-export function btoa(data: string): string {
-  const ab = stringToArrayBuffer(data)
-  if (typeof base64FromArrayBuffer !== 'undefined') {
-    return base64FromArrayBuffer(ab)
-  } else {
-    return fallback.fromByteArray(new Uint8Array(ab))
-  }
+/**
+ * Base64 encode a string
+ * @deprecated Use native btoa() instead - now supported in Hermes
+ */
+export function btoa(data: string) {
+  return global.base64FromArrayBuffer(stringToArrayBuffer(data))
 }
 
-export function atob(b64: string): string {
-  const ua = toByteArray(b64)
-  return uint8ArrayToString(ua)
+/**
+ * Base64 decode a string
+ * @deprecated Use native atob() instead - now supported in Hermes
+ */
+export function atob(b64: string) {
+  return uint8ArrayToString(toByteArray(b64))
 }
 
+/**
+ * Adds btoa and atob to global scope
+ */
 export function shim() {
-  ;(global as any).btoa = btoa
-  ;(global as any).atob = atob
+  global.btoa = btoa
+  global.atob = atob
 }
 
+/**
+ * Returns native base64 functions
+ */
 export const getNative = () => ({
-  base64FromArrayBuffer,
-  base64ToArrayBuffer
+  base64FromArrayBuffer: global.base64FromArrayBuffer,
+  base64ToArrayBuffer: global.base64ToArrayBuffer
 })
 
-export const trimBase64Padding = (str: string): string => {
+/**
+ * Removes padding characters from base64 string
+ */
+export const trimBase64Padding = (str: string) => {
   return str.replace(/[.=]{1,2}$/, '')
 }

@@ -18,6 +18,7 @@
     "mocha": "^10.3.0",
     "react": "19.0.0",
     "react-native": "0.79.2",
+    "react-native-quick-base64": "link:../",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5"
   },
@@ -36,10 +37,9 @@
     "@types/mocha": "^10.0.6",
     "@types/react": "^19.0.0",
     "babel-plugin-module-resolver": "^5.0.2",
-    "react-native-builder-bob": "^0.40.11",
-    "react-native-monorepo-config": "^0.1.9"
+    "react-native-builder-bob": "^0.40.11"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20.19.0"
   }
 }

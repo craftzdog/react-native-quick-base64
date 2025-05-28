@@ -25,5 +25,18 @@
     "strict": true,
     "target": "ESNext",
     "verbatimModuleSyntax": true
-  }
+  },
+  "include": [
+    "src",
+    ".eslintrc.js",
+    "babel.config.js",
+    "global.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib",
+    "docs",
+    "example",
+    "history"
+  ]
 }

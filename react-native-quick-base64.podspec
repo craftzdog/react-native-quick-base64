@@ -15,11 +15,18 @@ Pod::Spec.new do |s|
 
   s.source_files =
   s.source_files = [
-    "ios/**/*.{h,m,mm,cpp}",
-    "cpp/**/*.{h,c,cpp}",
-    "ios/QuickBase64Module.h"
+    "ios/**/*.{h,m,mm}",
+    "cpp/**/*.{h,cpp}"
   ]
-  s.private_header_files = "ios/**/*.h"
 
- install_modules_dependencies(s)
+  s.header_mappings_dir = 'ios'
+  s.pod_target_xcconfig = {
+    "USE_HEADERMAP" => "NO"
+  }
+
+  if respond_to?(:install_modules_dependencies)
+    install_modules_dependencies(s)
+  else
+    s.dependency "React-Core"
+  end
 end
