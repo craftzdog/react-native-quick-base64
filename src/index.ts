@@ -101,7 +101,7 @@ export function fromByteArray(
  * @deprecated Use native btoa() instead - now supported in Hermes
  */
 export function btoa(data: string) {
-  return global.base64FromArrayBuffer(stringToArrayBuffer(data))
+  return global.base64FromArrayBuffer(stringToArrayBuffer(data), false)
 }
 
 /**
