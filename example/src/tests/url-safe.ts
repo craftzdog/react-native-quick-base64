@@ -40,7 +40,7 @@ describe('url-safe', () => {
       'base64 encode (url=true, trimmed)'
     )
     expect(actual).to.equal(
-      expected + '.',
+      expected,
       'base64 encode (url=true, not trimmed)'
     )
   })
