@@ -39,10 +39,7 @@ describe('url-safe', () => {
       expected,
       'base64 encode (url=true, trimmed)'
     )
-    expect(actual).to.equal(
-      expected + '.',
-      'base64 encode (url=true, not trimmed)'
-    )
+    expect(actual).to.equal(expected, 'base64 encode (url=true, not trimmed)')
   })
 
   it('encode/decode base64 string w padding', async () => {
