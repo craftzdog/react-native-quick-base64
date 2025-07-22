@@ -1332,7 +1332,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-quick-base64 (2.1.2):
+  - react-native-quick-base64 (2.2.0):
     - React-Core
   - React-NativeModulesApple (0.79.2):
     - glog
@@ -1891,7 +1891,7 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 314be5250afa5692b57b4dd1705959e1973a8ebe
-  RCT-Folly: 36fe2295e44b10d831836cc0d1daec5f8abcf809
+  RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: 83ffb90c23ee5cea353bd32008a7bca100908f8c
   RCTRequired: eb7c0aba998009f47a540bec9e9d69a54f68136e
   RCTTypeSafety: 659ae318c09de0477fd27bbc9e140071c7ea5c93
@@ -1922,7 +1922,7 @@ SPEC CHECKSUMS:
   React-logger: 8edfcedc100544791cd82692ca5a574240a16219
   React-Mapbuffer: c3f4b608e4a59dd2f6a416ef4d47a14400194468
   React-microtasksnativemodule: 054f34e9b82f02bd40f09cebd4083828b5b2beb6
-  react-native-quick-base64: ae6422236668e8a5b1100d4bada950e1c56d9c18
+  react-native-quick-base64: 17dc4b8daee50e680d5f57cc3ee6773b6ee0110a
   React-NativeModulesApple: 2c4377e139522c3d73f5df582e4f051a838ff25e
   React-oscompat: ef5df1c734f19b8003e149317d041b8ce1f7d29c
   React-perflogger: 9a151e0b4c933c9205fd648c246506a83f31395d
@@ -1959,4 +1959,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 55d0b345d6095adc3419764b49e837970e84ec13
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
