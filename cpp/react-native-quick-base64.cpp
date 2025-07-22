@@ -35,11 +35,11 @@ void installBase64(jsi::Runtime& jsiRuntime) {
       1,  // string
       [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         std::string str;
-        if(!valueToString(runtime, arguments[0], &str)) {
+        if(count > 0 && !valueToString(runtime, arguments[0], &str)) {
           return jsi::Value(-1);
         }
         bool url = false;
-        if (arguments[1].isBool()) {
+        if (count > 1 && arguments[1].isBool()) {
           url = arguments[1].asBool();
         }
         try {
@@ -59,13 +59,13 @@ void installBase64(jsi::Runtime& jsiRuntime) {
       jsi::PropNameID::forAscii(jsiRuntime, "base64ToArrayBuffer"),
       1,  // string
       [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
-        if (!arguments[0].isString()) {
+        if (count > 0 && !arguments[0].isString()) {
           return jsi::Value(-1);
         }
 
         std::string strBase64 = arguments[0].getString(runtime).utf8(runtime);
         bool removeLinebreaks = false;
-        if (arguments[1].isBool()) {
+        if (count > 1 && arguments[1].isBool()) {
           removeLinebreaks = arguments[1].asBool();
         }
         try {
