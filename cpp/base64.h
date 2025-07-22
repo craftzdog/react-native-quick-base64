@@ -169,7 +169,7 @@ template <typename RetString>
 inline RetString base64_encode(const unsigned char* bytes_to_encode, size_t in_len, bool url) {
    size_t len_encoded = (in_len + 2) / 3 * 4;
 
-   unsigned char trailing_char = url ? '.' : '=';
+   const unsigned char trailing_char = '=';
 
    //
    // Choose set of base64 characters. They differ
@@ -200,12 +200,12 @@ inline RetString base64_encode(const unsigned char* bytes_to_encode, size_t in_l
             ret.push_back(base64_chars_[bytes_to_encode[pos + 2] & 0x3f]);
          } else {
             ret.push_back(base64_chars_[(bytes_to_encode[pos + 1] & 0x0f) << 2]);
-            ret.push_back(trailing_char);
+            if (!url) ret.push_back(trailing_char);
          }
       } else {
          ret.push_back(base64_chars_[(bytes_to_encode[pos + 0] & 0x03) << 4]);
-         ret.push_back(trailing_char);
-         ret.push_back(trailing_char);
+         if (!url) ret.push_back(trailing_char);
+         if (!url) ret.push_back(trailing_char);
       }
 
       pos += 3;
@@ -250,12 +250,12 @@ inline RetString decode(const String& encoded_string, bool remove_linebreaks) {
    RetString ret;
    ret.reserve(approx_length_of_decoded_string);
 
-   while (pos < length_of_string) {
+   while (pos < length_of_string && encoded_string.at(pos) != '=') {
       //
       // Iterate over encoded input string in chunks. The size of all
       // chunks except the last one is 4 bytes.
       //
-      // The last chunk might be padded with equal signs or dots
+      // The last chunk might be padded with equal signs
       // in order to make it 4 bytes in size as well, but this
       // is not required as per RFC 2045.
       //
@@ -273,8 +273,7 @@ inline RetString decode(const String& encoded_string, bool remove_linebreaks) {
 
       if ((pos + 2 < length_of_string) &&
           // Check for data that is not padded with equal signs (which is allowed by RFC 2045)
-          encoded_string.at(pos + 2) != '=' &&
-          encoded_string.at(pos + 2) != '.' ) {     // accept URL-safe base 64 strings, too, so check for '.' also.
+          encoded_string.at(pos + 2) != '=') {
          //
          // Emit a chunk's second byte (which might not be produced in the last chunk).
          //
@@ -282,8 +281,7 @@ inline RetString decode(const String& encoded_string, bool remove_linebreaks) {
          ret.push_back(static_cast<typename RetString::value_type>(((pos_of_char_1 & 0x0f) << 4) + ((pos_of_char_2 & 0x3c) >> 2)));
 
          if ((pos + 3 < length_of_string) &&
-             encoded_string.at(pos + 3) != '=' &&
-             encoded_string.at(pos + 3) != '.' ) {
+             encoded_string.at(pos + 3) != '=') {
             //
             // Emit a chunk's third byte (which might not be produced in the last chunk).
             //
