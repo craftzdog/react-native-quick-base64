@@ -16,7 +16,7 @@ include_directories(
 add_library(
   ${PACKAGE_NAME}
   SHARED
-  ../cpp/base64.h
+  ../cpp/simdutf.cpp
   ../cpp/react-native-quick-base64.cpp
   ../cpp/react-native-quick-base64.h
   cpp-adapter.cpp

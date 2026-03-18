@@ -4,8 +4,9 @@ import { describe, it } from '../MochaRNAdapter'
 import { mapArr } from './util'
 
 describe('linebreaks', () => {
-  // encoded `one\ntwo\nthree\nfour` in base64 online tool
-  const str = 'b25lCnR3bw==\ndGhyZWUKZm91cg=='
+  // `one\ntwothree\nfour` encoded as a single continuous base64 stream,
+  // then split across two lines (MIME/PEM style line wrapping).
+  const str = 'b25lCnR3b3Ro\ncmVlCmZvdXI='
 
   it('with linebreaks, leave them', () => {
     expect(() => toByteArray(str)).to.throw(
