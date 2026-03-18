@@ -2,29 +2,24 @@
 #include "base64.h"
 
 #include <iostream>
-#include <sstream>
+#include <memory>
 
 using namespace facebook;
 
-// Returns false if the passed value is not a string or an ArrayBuffer.
-bool valueToString(jsi::Runtime& runtime, const jsi::Value& value, std::string* str) {
-  if (value.isString()) {
-    *str = value.asString(runtime).utf8(runtime);
-    return true;
+// Owns a decoded std::string. JSI holds the shared_ptr alive for the
+// ArrayBuffer's lifetime — no memcpy needed.
+namespace {
+class DecodedBuffer final : public jsi::MutableBuffer {
+public:
+  explicit DecodedBuffer(std::string&& s) noexcept : data_(std::move(s)) {}
+  size_t size() const override { return data_.size(); }
+  uint8_t* data() override {
+    return reinterpret_cast<uint8_t*>(data_.data());
   }
-
-  if (value.isObject()) {
-    auto obj = value.asObject(runtime);
-    if (!obj.isArrayBuffer(runtime)) {
-      return false;
-    }
-    auto buf = obj.getArrayBuffer(runtime);
-    *str = std::string((char*)buf.data(runtime), buf.size(runtime));
-    return true;
-  }
-
-  return false;
-}
+private:
+  std::string data_;
+};
+} // namespace
 
 void installBase64(jsi::Runtime& jsiRuntime) {
   std::cout << "Initializing react-native-quick-base64" << "\n";
@@ -34,8 +29,7 @@ void installBase64(jsi::Runtime& jsiRuntime) {
       jsi::PropNameID::forAscii(jsiRuntime, "base64FromArrayBuffer"),
       1,  // string
       [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
-        std::string str;
-        if(count > 0 && !valueToString(runtime, arguments[0], &str)) {
+        if (count == 0) {
           return jsi::Value(-1);
         }
         bool url = false;
@@ -43,7 +37,20 @@ void installBase64(jsi::Runtime& jsiRuntime) {
           url = arguments[1].asBool();
         }
         try {
-          std::string strBase64 = base64_encode(str, url);
+          std::string strBase64;
+          if (arguments[0].isObject()) {
+            auto obj = arguments[0].asObject(runtime);
+            if (!obj.isArrayBuffer(runtime)) {
+              return jsi::Value(-1);
+            }
+            auto buf = obj.getArrayBuffer(runtime);
+            strBase64 = base64_encode(buf.data(runtime), buf.size(runtime), url);
+          } else if (arguments[0].isString()) {
+            std::string str = arguments[0].asString(runtime).utf8(runtime);
+            strBase64 = base64_encode(str, url);
+          } else {
+            return jsi::Value(-1);
+          }
           return jsi::Value(jsi::String::createFromUtf8(runtime, strBase64));
         } catch (const std::runtime_error& error) {
           throw jsi::JSError(runtime, error.what());
@@ -59,7 +66,7 @@ void installBase64(jsi::Runtime& jsiRuntime) {
       jsi::PropNameID::forAscii(jsiRuntime, "base64ToArrayBuffer"),
       1,  // string
       [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
-        if (count > 0 && !arguments[0].isString()) {
+        if (count == 0 || !arguments[0].isString()) {
           return jsi::Value(-1);
         }
 
@@ -69,12 +76,9 @@ void installBase64(jsi::Runtime& jsiRuntime) {
           removeLinebreaks = arguments[1].asBool();
         }
         try {
-          std::string str = base64_decode(strBase64, removeLinebreaks);
-          jsi::Function arrayBufferCtor = runtime.global().getPropertyAsFunction(runtime, "ArrayBuffer");
-          jsi::Object o = arrayBufferCtor.callAsConstructor(runtime, (int)str.length()).getObject(runtime);
-          jsi::ArrayBuffer buf = o.getArrayBuffer(runtime);
-          memcpy(buf.data(runtime), str.c_str(), str.size());
-          return o;
+          std::string decoded = base64_decode(strBase64, removeLinebreaks);
+          auto buf = std::make_shared<DecodedBuffer>(std::move(decoded));
+          return jsi::ArrayBuffer(runtime, std::move(buf));
         } catch (const std::runtime_error& error) {
           throw jsi::JSError(runtime, error.what());
         } catch (...) {
