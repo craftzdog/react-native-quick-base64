@@ -63,7 +63,19 @@ void installBase64(jsi::Runtime& jsiRuntime) {
           return jsi::Value(-1);
         }
 
-        std::string strBase64 = arguments[0].getString(runtime).utf8(runtime);
+        std::string strBase64;
+        auto cb = [&strBase64](bool ascii, const void* data, size_t num) {
+          if (ascii) {
+            strBase64.append(static_cast<const char*>(data), num);
+          } else {
+            const auto* u16 = static_cast<const char16_t*>(data);
+            strBase64.reserve(strBase64.size() + num);
+            for (size_t i = 0; i < num; i++) {
+              strBase64.push_back(static_cast<char>(u16[i]));
+            }
+          }
+        };
+        arguments[0].asString(runtime).getStringData(runtime, cb);
         bool removeLinebreaks = false;
         if (count > 1 && arguments[1].isBool()) {
           removeLinebreaks = arguments[1].asBool();
