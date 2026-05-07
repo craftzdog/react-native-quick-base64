@@ -17,4 +17,9 @@ const config = withMetroConfig(getDefaultConfig(__dirname), {
 
 config.resolver.unstable_enablePackageExports = true
 
+config.resolver.extraNodeModules = {
+  ...(config.resolver.extraNodeModules || {}),
+  stream: require.resolve('stream-browserify')
+}
+
 module.exports = config

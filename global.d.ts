@@ -15,7 +15,4 @@ type FuncBase64FromArrayBuffer = (
   urlSafe?: boolean
 ) => string
 
-declare var base64ToArrayBuffer: FuncBase64ToArrayBuffer
-declare const base64FromArrayBuffer: FuncBase64FromArrayBuffer
-
 export {}
