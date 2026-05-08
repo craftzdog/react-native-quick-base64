@@ -109,8 +109,22 @@
         {
           "project": "tsconfig.build.json"
         }
-      ]
+      ],
+      "codegen"
     ]
+  },
+  "codegenConfig": {
+    "name": "QuickBase64Spec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
+    },
+    "android": {
+      "javaPackageName": "com.quickbase64"
+    },
+    "includesGeneratedCode": true
   },
   "jest": {
     "preset": "@react-native/jest-preset",

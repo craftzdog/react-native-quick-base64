@@ -13,20 +13,8 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/craftzdog/react-native-quick-base64.git", :tag => "#{s.version}" }
 
-  s.source_files =
-  s.source_files = [
-    "ios/**/*.{h,m,mm}",
-    "cpp/**/*.{h,cpp}"
-  ]
+  s.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{hpp,cpp,c,h}", "ios/generated/*.{h,cpp,mm}"
+  s.private_header_files = "ios/**/*.h"
 
-  s.header_mappings_dir = 'ios'
-  s.pod_target_xcconfig = {
-    "USE_HEADERMAP" => "NO"
-  }
-
-  if respond_to?(:install_modules_dependencies)
-    install_modules_dependencies(s)
-  else
-    s.dependency "React-Core"
-  end
+  install_modules_dependencies(s)
 end
