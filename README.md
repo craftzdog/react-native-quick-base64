@@ -18,10 +18,10 @@ Try the benchmarks in the [example](./example) app.
 - 🧩 Drop-in replacement for `base64-js` with matching API
 - 🔒 No additional native setup or linking required
 
-> ℹ️ **Heads-up**:
-> Starting with recent versions of **Hermes**, `btoa` and `atob` are **natively available in the JS runtime**.
-> You likely don't need to use the versions provided by this library anymore unless you're running on an older engine or want consistent behavior across platforms.
-> These methods will remain in the package for compatibility but are considered **deprecated**.
+> ⚠️ **Breaking change** (#53):
+> The `btoa`, `atob`, and `shim()` polyfills have been **removed**.
+> Recent versions of **Hermes** provide `btoa` and `atob` natively in the JS runtime, so the polyfills are no longer needed.
+> If you need string ⇄ base64 conversion, use `TextEncoder` / `TextDecoder` together with `fromByteArray` / `toByteArray` (see Usage below).
 
 ---
 
@@ -50,10 +50,10 @@ import { fromByteArray, toByteArray } from 'react-native-quick-base64'
 ### Usage
 
 ```tsx
-import { btoa, atob } from 'react-native-quick-base64'
+import { fromByteArray, toByteArray } from 'react-native-quick-base64'
 
-const base64 = btoa('foo')
-const decoded = atob(base64)
+const base64 = fromByteArray(new TextEncoder().encode('foo'))
+const decoded = new TextDecoder().decode(toByteArray(base64))
 ```
 
 ---
@@ -75,32 +75,6 @@ If `removeLinebreaks` is `true`, all `\n` characters are removed first.
 
 Converts a byte array into a base64 string.
 If `urlSafe` is `true`, the output uses a URL-safe base64 charset.
-
-### `btoa(data: string): string` ⚠️ Deprecated
-
-Encodes a string into base64 format.
-
-> **Avoid using this unless you're on an older JS engine.**
-> Use `fromByteArray(new TextEncoder().encode(...))` instead for better encoding control.
-
-### `atob(b64: string): string` ⚠️ Deprecated
-
-Decodes a base64 string into a UTF-8 string.
-
-> **Avoid using this unless you're on an older JS engine.**
-> Use `TextDecoder + toByteArray()` for more robust decoding.
-
-### `shim()`
-
-Adds global `btoa` and `atob` functions
-
-```ts
-import { shim } from 'react-native-quick-base64'
-
-shim()
-
-btoa('foo') // available globally
-```
 
 ### `trimBase64Padding(str: string): string`
 
