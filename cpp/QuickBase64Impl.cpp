@@ -1,10 +1,25 @@
 #include "QuickBase64Impl.h"
 #include "base64.h"
 
-#include <cstring>
+#include <memory>
 #include <stdexcept>
 
 namespace facebook::react {
+
+// Owns a decoded std::string. JSI holds the shared_ptr alive for the
+// ArrayBuffer's lifetime — no memcpy needed.
+namespace {
+class DecodedBuffer final : public jsi::MutableBuffer {
+public:
+  explicit DecodedBuffer(std::string&& s) noexcept : data_(std::move(s)) {}
+  size_t size() const override { return data_.size(); }
+  uint8_t* data() override {
+    return reinterpret_cast<uint8_t*>(data_.data());
+  }
+private:
+  std::string data_;
+};
+} // namespace
 
 QuickBase64Impl::QuickBase64Impl(std::shared_ptr<CallInvoker> jsInvoker)
   : NativeQuickBase64CxxSpec(std::move(jsInvoker)) {}
@@ -33,20 +48,15 @@ jsi::Object QuickBase64Impl::base64ToArrayBuffer(
   jsi::String b64,
   bool removeLinebreaks
 ) {
-  std::string decoded;
   try {
-    decoded = base64_decode(b64.utf8(rt), removeLinebreaks);
+    std::string decoded = base64_decode(b64.utf8(rt), removeLinebreaks);
+    auto buf = std::make_shared<DecodedBuffer>(std::move(decoded));
+    return jsi::ArrayBuffer(rt, std::move(buf));
   } catch (const std::runtime_error& e) {
     throw jsi::JSError(rt, e.what());
   } catch (...) {
     throw jsi::JSError(rt, "unknown decoding error");
   }
-
-  auto arrayBufferCtor = rt.global().getPropertyAsFunction(rt, "ArrayBuffer");
-  auto obj = arrayBufferCtor.callAsConstructor(rt, static_cast<int>(decoded.length())).getObject(rt);
-  auto arrayBuffer = obj.getArrayBuffer(rt);
-  std::memcpy(arrayBuffer.data(rt), decoded.c_str(), decoded.size());
-  return obj;
 }
 
 }
