@@ -80,7 +80,19 @@ jsi::Object QuickBase64Impl::base64ToArrayBuffer(
   bool removeLinebreaks
 ) {
   try {
-    std::string input = b64.utf8(rt);
+    std::string input;
+    auto cb = [&input](bool ascii, const void* data, size_t num) {
+      input.reserve(input.size() + num);
+      if (ascii) {
+        input.append(static_cast<const char*>(data), num);
+      } else {
+        const auto* u16 = static_cast<const char16_t*>(data);
+        for (size_t i = 0; i < num; ++i) {
+          input.push_back(static_cast<char>(u16[i]));
+        }
+      }
+    };
+    b64.getStringData(rt, cb);
     if (removeLinebreaks) {
       input.erase(std::remove(input.begin(), input.end(), '\n'), input.end());
     } else if (input.find('\n') != std::string::npos) {
