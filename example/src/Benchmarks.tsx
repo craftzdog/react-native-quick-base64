@@ -35,7 +35,7 @@ const Benchmarks = () => {
       }
     }
     const finishedTime = performance.now()
-    console.log('done! took', finishedTime - startTime, 'milliseconds')
+    console.log('done! took', finishedTime - startTime, 'ms')
     setNativeBase64Result(finishedTime - startTime)
     setProcessingNativeBase64(false)
   }
@@ -51,7 +51,7 @@ const Benchmarks = () => {
       dataToProcess = jsBase64.fromByteArray(decoded)
     }
     const finishedTime = performance.now()
-    console.log('done! took', finishedTime - startTime, 'milliseconds')
+    console.log('done! took', finishedTime - startTime, 'ms')
     setJSBase64Result(finishedTime - startTime)
     setProcessingJSBase64(false)
   }
@@ -70,7 +70,7 @@ const Benchmarks = () => {
       }
     }
     const finishedTime = performance.now()
-    console.log('done! took', finishedTime - startTime, 'milliseconds')
+    console.log('done! took', finishedTime - startTime, 'ms')
     setHermesResult(finishedTime - startTime)
     setProcessingHermes(false)
   }
@@ -91,23 +91,21 @@ const Benchmarks = () => {
       <View style={styles.lib}>
         <Text style={styles.heading}>Base64 in C++</Text>
         <Text style={styles.result}>
-          {nativeBase64Result > 0
-            ? `${round(nativeBase64Result, 6)} milliseconds`
-            : ''}
+          {nativeBase64Result > 0 ? `${round(nativeBase64Result)} ms` : ''}
         </Text>
       </View>
 
       <View style={styles.lib}>
         <Text style={styles.heading}>base64-js</Text>
         <Text style={styles.result}>
-          {jsBase64Result > 0 ? `${round(jsBase64Result, 6)} milliseconds` : ''}
+          {jsBase64Result > 0 ? `${round(jsBase64Result)} ms` : ''}
         </Text>
       </View>
 
       <View style={styles.lib}>
-        <Text style={styles.heading}>Hermes atob/btoa</Text>
+        <Text style={styles.heading}>Hermes atob/btoa (string only)</Text>
         <Text style={styles.result}>
-          {hermesResult > 0 ? `${round(hermesResult, 6)} milliseconds` : ''}
+          {hermesResult > 0 ? `${round(hermesResult)} ms` : ''}
         </Text>
       </View>
 
