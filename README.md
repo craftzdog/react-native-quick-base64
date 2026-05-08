@@ -2,12 +2,10 @@
 
 A blazing fast, native Base64 implementation for React Native using C++ and JSI.
 
-This library is ~16x faster than [base64-js](https://github.com/beatgammit/base64-js) on an iPhone 15 Pro Max simulator.
+This library is ~30x faster than [base64-js](https://github.com/beatgammit/base64-js).
 Try the benchmarks in the [example](./example) app.
 
-| iPhone                                            | Android                                             |
-| ------------------------------------------------- | --------------------------------------------------- |
-| ![iPhone](./docs/iphone-15-pro-max-simulator.png) | ![Android](./docs/android-pixel-6-pro-emulator.png) |
+![benchmark](./docs/benchmark.png)
 
 ---
 
@@ -17,11 +15,6 @@ Try the benchmarks in the [example](./example) app.
 - 🧠 Automatically installs its JSI bindings at runtime
 - 🧩 Drop-in replacement for `base64-js` with matching API
 - 🔒 No additional native setup or linking required
-
-> ⚠️ **Breaking change** (#53):
-> The `btoa`, `atob`, and `shim()` polyfills have been **removed**.
-> Recent versions of **Hermes** provide `btoa` and `atob` natively in the JS runtime, so the polyfills are no longer needed.
-> If you need string ⇄ base64 conversion, use `TextEncoder` / `TextDecoder` together with `fromByteArray` / `toByteArray` (see Usage below).
 
 ---
 
@@ -79,6 +72,12 @@ If `urlSafe` is `true`, the output uses a URL-safe base64 charset.
 ### `trimBase64Padding(str: string): string`
 
 Removes trailing `=` or `.` padding from base64 or base64url-encoded strings.
+
+> [!NOTE]
+> **Breaking change** (#53):
+> The `btoa`, `atob`, and `shim()` polyfills have been **removed**.
+> Recent versions of **Hermes** provide `btoa` and `atob` natively in the JS runtime, so the polyfills are no longer needed.
+> If you need string ⇄ base64 conversion, use `TextEncoder` / `TextDecoder` together with `fromByteArray` / `toByteArray` (see Usage below).
 
 ---
 
