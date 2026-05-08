@@ -17,6 +17,7 @@ const Benchmarks = () => {
   const [processingNativeBase64, setProcessingNativeBase64] =
     useState<boolean>(false)
   const [nativeBase64Result, setNativeBase64Result] = useState<number>(0)
+  const ITER_COUNT = 3000
 
   const handleNativeBase64Press = async () => {
     setProcessingNativeBase64(true)
@@ -24,7 +25,7 @@ const Benchmarks = () => {
     await sleep(1)
     const startTime = performance.now()
 
-    for (let iter = 0; iter < 30; iter++) {
+    for (let iter = 0; iter < ITER_COUNT; iter++) {
       const decoded = toByteArray(dataToProcess)
       dataToProcess = fromByteArray(decoded)
       if (dataToProcess !== data) {
@@ -43,7 +44,7 @@ const Benchmarks = () => {
     await sleep(1)
     const startTime = performance.now()
 
-    for (let iter = 0; iter < 30; iter++) {
+    for (let iter = 0; iter < ITER_COUNT; iter++) {
       const decoded = jsBase64.toByteArray(dataToProcess)
       dataToProcess = jsBase64.fromByteArray(decoded)
     }

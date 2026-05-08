@@ -16,9 +16,8 @@
     "chai": "^5.1.0",
     "events": "^3.3.0",
     "mocha": "^10.3.0",
-    "react": "19.1.0",
-    "react-native": "0.81.1",
-    "react-native-quick-base64": "link:../",
+    "react": "19.2.3",
+    "react-native": "0.85.0",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5"
   },
@@ -27,20 +26,21 @@
     "@babel/plugin-transform-class-static-block": "^7.27.1",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
-    "@react-native-community/cli": "20.0.1",
-    "@react-native-community/cli-platform-android": "20.0.1",
-    "@react-native-community/cli-platform-ios": "20.0.1",
-    "@react-native/babel-preset": "0.81.1",
-    "@react-native/metro-config": "0.81.1",
-    "@react-native/typescript-config": "0.81.1",
+    "@react-native-community/cli": "20.1.0",
+    "@react-native-community/cli-platform-android": "20.1.0",
+    "@react-native-community/cli-platform-ios": "20.1.0",
+    "@react-native/babel-preset": "0.85.0",
+    "@react-native/jest-preset": "0.85.0",
+    "@react-native/metro-config": "0.85.0",
+    "@react-native/typescript-config": "0.85.0",
     "@types/chai": "^4.3.14",
     "@types/mocha": "^10.0.6",
-    "@types/react": "^19.0.0",
+    "@types/react": "^19.2.0",
     "babel-plugin-module-resolver": "^5.0.2",
-    "react-native-builder-bob": "^0.40.11",
-    "react-native-monorepo-config": "^0.1.9"
+    "react-native-builder-bob": "^0.41.0",
+    "react-native-monorepo-config": "^0.3.3"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">= 22.11.0"
   }
 }
