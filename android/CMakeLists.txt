@@ -7,6 +7,7 @@ set (CMAKE_VERBOSE_MAKEFILE ON)
 add_library(
     ${PACKAGE_NAME}    STATIC
     ../cpp/QuickBase64Impl.cpp
+    ../cpp/simdutf.cpp
 )
 
 set_target_properties(
