@@ -17,6 +17,8 @@ const Benchmarks = () => {
   const [processingNativeBase64, setProcessingNativeBase64] =
     useState<boolean>(false)
   const [nativeBase64Result, setNativeBase64Result] = useState<number>(0)
+  const [processingHermes, setProcessingHermes] = useState<boolean>(false)
+  const [hermesResult, setHermesResult] = useState<number>(0)
   const ITER_COUNT = 3000
 
   const handleNativeBase64Press = async () => {
@@ -53,10 +55,36 @@ const Benchmarks = () => {
     setJSBase64Result(finishedTime - startTime)
     setProcessingJSBase64(false)
   }
-  const speedup =
+
+  const handleHermesPress = async () => {
+    setProcessingHermes(true)
+    let dataToProcess = data
+    await sleep(1)
+    const startTime = performance.now()
+
+    for (let iter = 0; iter < ITER_COUNT; iter++) {
+      const binary = atob(dataToProcess)
+      dataToProcess = btoa(binary)
+      if (dataToProcess !== data) {
+        throw new Error('Data does not match')
+      }
+    }
+    const finishedTime = performance.now()
+    console.log('done! took', finishedTime - startTime, 'milliseconds')
+    setHermesResult(finishedTime - startTime)
+    setProcessingHermes(false)
+  }
+
+  const speedupVsJs =
     jsBase64Result && nativeBase64Result
-      ? round(jsBase64Result / nativeBase64Result) + 'x faster'
-      : ' '
+      ? round(jsBase64Result / nativeBase64Result) + 'x vs base64-js'
+      : ''
+  const speedupVsHermes =
+    hermesResult && nativeBase64Result
+      ? round(hermesResult / nativeBase64Result) + 'x vs Hermes'
+      : ''
+  const isProcessing =
+    processingNativeBase64 || processingJSBase64 || processingHermes
 
   return (
     <View>
@@ -76,19 +104,26 @@ const Benchmarks = () => {
         </Text>
       </View>
 
-      <Text style={styles.speedup}>{speedup}</Text>
+      <View style={styles.lib}>
+        <Text style={styles.heading}>Hermes atob/btoa</Text>
+        <Text style={styles.result}>
+          {hermesResult > 0 ? `${round(hermesResult, 6)} milliseconds` : ''}
+        </Text>
+      </View>
+
+      <Text style={styles.speedup}>{speedupVsJs}</Text>
+      <Text style={styles.speedup}>{speedupVsHermes}</Text>
 
       <Pressable
         onPress={() => {
           handleNativeBase64Press()
           handleJSBase64Press()
+          handleHermesPress()
         }}
         style={styles.button}
       >
         <Text style={styles.pressable}>
-          {processingNativeBase64 || processingJSBase64
-            ? 'Processing...'
-            : 'Run Benchmarks'}
+          {isProcessing ? 'Processing...' : 'Run Benchmarks'}
         </Text>
       </Pressable>
     </View>
