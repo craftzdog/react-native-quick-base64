@@ -27,3 +27,10 @@ target_link_libraries(
     reactnative
     react_codegen_QuickBase64Spec
 )
+
+# The codegen output in android/generated is shipped prebuilt, so it can call
+# React Native APIs that newer versions deprecate. React Native builds codegen
+# targets with -Werror, so don't let those deprecation warnings fail the build.
+if(TARGET react_codegen_QuickBase64Spec)
+    target_compile_options(react_codegen_QuickBase64Spec PRIVATE -Wno-deprecated-declarations)
+endif()
