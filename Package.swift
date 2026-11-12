@@ -3,7 +3,6 @@
 import Foundation
 import PackageDescription
 
-// React Native resolves these paths through its generated autolinking symlink.
 let usedRootEntries: Set<String> = ["ios", "cpp", "Package.swift"]
 let unusedRootEntries = try! FileManager.default.contentsOfDirectory(atPath: Context.packageDirectory)
     .filter { !usedRootEntries.contains($0) }
