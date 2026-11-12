@@ -3,7 +3,7 @@
 import Foundation
 import PackageDescription
 
-let usedRootEntries: Set<String> = ["ios", "cpp", "Package.swift"]
+let usedRootEntries: Set<String> = ["ios", "cpp", "spm-include", "Package.swift"]
 let unusedRootEntries = try! FileManager.default.contentsOfDirectory(atPath: Context.packageDirectory)
     .filter { !usedRootEntries.contains($0) }
     .sorted()
@@ -30,13 +30,17 @@ let package = Package(
             path: ".",
             exclude: unusedRootEntries,
             sources: ["ios", "cpp"],
-            publicHeadersPath: "cpp",
+            publicHeadersPath: "spm-include",
             cSettings: [
                 .define("RCT_NEW_ARCH_ENABLED", to: "1"),
+                .headerSearchPath("cpp"),
+                .headerSearchPath("ios"),
                 .headerSearchPath("ios/generated/ReactCodegen"),
             ],
             cxxSettings: [
                 .define("RCT_NEW_ARCH_ENABLED", to: "1"),
+                .headerSearchPath("cpp"),
+                .headerSearchPath("ios"),
                 .headerSearchPath("ios/generated/ReactCodegen"),
                 .define("DEBUG", .when(configuration: .debug)),
                 .define("NDEBUG", .when(configuration: .release)),

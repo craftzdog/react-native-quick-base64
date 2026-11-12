@@ -18,6 +18,7 @@
     "android",
     "ios",
     "cpp",
+    "spm-include",
     "Package.swift",
     "*.podspec",
     "react-native.config.js",
