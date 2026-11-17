@@ -18,6 +18,8 @@
     "android",
     "ios",
     "cpp",
+    "spm-include",
+    "Package.swift",
     "*.podspec",
     "react-native.config.js",
     "!ios/build",
@@ -168,5 +170,8 @@
       "release-it"
     ],
     "version": "0.62.0"
+  },
+  "swiftpmConfig": {
+    "name": "react_native_quick_base64"
   }
 }
